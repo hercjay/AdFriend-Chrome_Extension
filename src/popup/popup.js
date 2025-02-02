@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
     // Update settings when toggled
     toggleExtension.addEventListener("change", () => {
-      chrome.storage.local.set({ enabled: toggleExtension.checked });
+      chrome.storage.sync.set({ enabled: toggleExtension.checked });
     });
   });
   
