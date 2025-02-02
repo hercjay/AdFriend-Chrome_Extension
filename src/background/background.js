@@ -6,6 +6,11 @@ chrome.runtime.onInstalled.addListener(() => {
       enabled: true,
       messageIndex: 0
     });
+
+    chrome.storage.sync.set({
+      enabled: true,
+      messageIndex: 0
+    });
   });
   
   // Listen for changes in storage
