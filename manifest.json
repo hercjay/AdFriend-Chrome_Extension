@@ -22,7 +22,8 @@
         "css": ["src/content-scripts/widgetStyle.css"],
         "js": [
               "src/content-scripts/adSelector.js", 
-              "src/content-scripts/styleHandler.js", 
+              "src/content-scripts/styleHandler.js",
+              "src/content-scripts/messageHandler.js", 
               "src/content-scripts/content.js"
               ],
         "run_at": "document_end"
