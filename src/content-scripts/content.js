@@ -5,18 +5,21 @@ console.log("AdFriend Content Script Loaded");
 function replaceAds() {
 
     // Get the patterns from global adSelector variable defined in manifest.json and adSelector.js
-  const adElements = document.querySelectorAll(window.adSelector);
-
+  const adElements = document.querySelectorAll(window.AdFriend_adSelector);
   console.log("AdFriend: number of ads on this page is " + adElements.length);
+  //use runtime to send a message to be received by another script that will return random messages
+    chrome.runtime.sendMessage({ action: "getRandomMessages", index: index }, (response) => {
+        let messages = response;
+    });
 
     try {
-        adElements.forEach((ad) => {
+        adElements.forEach((ad, index) => {
             let widget = document.createElement("div");
             widget.className = "AdFriend-widget";
             widget.innerHTML = `
                 <div class="AdFriend-message">
-                    <h3>🌟 Stay Inspired!</h3>
-                    <p>${getRandomMessage()}</p>
+                    <h3>🌟 ${messages.title}</h3>
+                    <p>${messages.content}</p>
                 </div>
             `;
 
@@ -27,16 +30,6 @@ function replaceAds() {
     } catch (error) {
         console.error("AdFriend: Error replacing ads", error);
     }
-}
-
-function getRandomMessage() {
-  const messages = [
-    "Keep pushing forward!",
-    "You are capable of amazing things!",
-    "Take a deep breath and keep going!",
-    "Your hard work will pay off!"
-  ];
-  return messages[Math.floor(Math.random() * messages.length)];
 }
 
 
@@ -66,7 +59,7 @@ function listenForPluginEnabledChanges() {
 getPluginEnabledValue().then((enabled) => {
     console.log("AdFriend: Plugin enabled status is", enabled);
   if (enabled === true) {
-    replaceAds();
+    document.addEventListener('DOMContentLoaded', replaceAds);
   } 
 });
 
