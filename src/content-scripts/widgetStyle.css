@@ -1,0 +1,17 @@
+:root {
+    --adfriend-background: black;
+    --adfriend-padding: 15px;
+    --adfriend-border-radius: 5px;
+    --adfriend-text-align: center;
+    --adfriend-font-size: 14px;
+    --adfriend-color: white;
+  }
+  
+  .AdFriend-widget {
+    background: var(--adfriend-background);
+    padding: var(--adfriend-padding);
+    border-radius: var(--adfriend-border-radius);
+    text-align: var(--adfriend-text-align);
+    font-size: var(--adfriend-font-size);
+    color: var(--adfriend-color);
+  }
