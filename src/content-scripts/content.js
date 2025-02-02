@@ -11,29 +11,33 @@ function replaceAds() {
 
   console.log("AdFriend: number of ads on this page is " + adElements.length);
 
-  adElements.forEach((ad) => {
-    let widget = document.createElement("div");
-    widget.className = "AdFriend-widget";
-    widget.innerHTML = `
-      <div class="AdFriend-message">
-        <h3>🌟 Stay Inspired!</h3>
-        <p>${getRandomMessage()}</p>
-      </div>
-    `;
-    //TODO: I will migrate the styles to a separate file using the classnames
-    widget.style.cssText = `
-      background: black;
-      padding: 15px;
-      border-radius: 5px;
-      text-align: center;
-      font-size: 14px;
-      color: white;
-    `;
+    try {
+        adElements.forEach((ad) => {
+            let widget = document.createElement("div");
+            widget.className = "AdFriend-widget";
+            widget.innerHTML = `
+                <div class="AdFriend-message">
+                    <h3>🌟 Stay Inspired!</h3>
+                    <p>${getRandomMessage()}</p>
+                </div>
+            `;
+            //TODO: I will migrate the styles to a separate file using the classnames
+            widget.style.cssText = `
+                background: black;
+                padding: 15px;
+                border-radius: 5px;
+                text-align: center;
+                font-size: 14px;
+                color: white;
+            `;
 
-    console.log("AdFriend: Replacing this ad " + ad.outerHTML + " with this widget " + widget.outerHTML);
+            console.log("AdFriend: Replacing this ad " + ad.outerHTML + " with this widget " + widget.outerHTML);
 
-    ad.replaceWith(widget);
-  });
+            ad.replaceWith(widget);
+        });
+    } catch (error) {
+        console.error("AdFriend: Error replacing ads", error);
+    }
 }
 
 function getRandomMessage() {
