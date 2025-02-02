@@ -28,6 +28,7 @@ const defaultCategories = {
         if (data.msgCategories) {
           resolve(data.msgCategories);
         } else {
+          saveCategories(defaultCategories);
           resolve(defaultCategories);
         }
       });
@@ -42,19 +43,36 @@ const defaultCategories = {
   }
 
   // Create a new category
-    function createCategory(categoryKey, categoryTitle) { 
+    function createCategory(categoryKey, categoryTitle) {
         return loadCategories().then((categories) => {
-            if (!categories[categoryKey]) {
+        const lowerCaseCategoryKey = categoryKey.toLowerCase();
+        const existingCategoryKeys = Object.keys(categories).map(key => key.toLowerCase());
+    
+        if (!existingCategoryKeys.includes(lowerCaseCategoryKey)) {
             categories[categoryKey] = {
-                title: categoryTitle,
-                messages: []
+            title: categoryTitle,
+            enabled: true,
+            messages: []
             };
             return saveCategories(categories);
-            } else {
+        } else {
             return Promise.reject(`Category ${categoryKey} already exists.`);
-            }
+        }
         });
     }
+    // function createCategory(categoryKey, categoryTitle) { 
+    //     return loadCategories().then((categories) => {
+    //         if (!categories[categoryKey]) {
+    //         categories[categoryKey] = {
+    //             title: categoryTitle,
+    //             messages: []
+    //         };
+    //         return saveCategories(categories);
+    //         } else {
+    //         return Promise.reject(`Category ${categoryKey} already exists.`);
+    //         }
+    //     });
+    // }
   
   // Add a new message to a category
   function addMessageToCategory(categoryKey, message) {
