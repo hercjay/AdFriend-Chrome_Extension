@@ -67,5 +67,22 @@ const defaultCategories = {
       }
     });
   }
+
+
+  // Get a random message
+  window.getRandomMessage = function() {
+    return loadCategories().then((categories) => {
+      const categoryKeys = Object.keys(categories);
+      const enabledCategoryKeys = categoryKeys.filter((key) => categories[key].enabled);
+      const randomCategoryKey = enabledCategoryKeys[Math.floor(Math.random() * enabledCategoryKeys.length)];
+      const randomCategory = categories[randomCategoryKey];
+      const randomMessage = randomCategory.messages[Math.floor(Math.random() * randomCategory.messages.length)];
+  
+      return {
+        title: randomCategory.title,
+        content: randomMessage
+      };
+    });
+  };
   
   
