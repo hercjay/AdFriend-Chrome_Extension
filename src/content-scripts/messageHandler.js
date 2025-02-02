@@ -88,7 +88,7 @@ const defaultCategories = {
 
 
 // Get random messages
-window.getRandomMessage = function(numOfMsgs = 1) {
+ function getRandomMessages (numOfMsgs = 1) {
     return loadCategories().then((categories) => {
       const categoryKeys = Object.keys(categories);
       //filter for only enabled categories and categories with messages
@@ -109,4 +109,37 @@ window.getRandomMessage = function(numOfMsgs = 1) {
     });
   };
   
+
+
+
+
+//handle chrome message events for functions defined above
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    switch (request.action) {
+        case 'getRandomMessages':
+            getRandomMessage(request.numOfMsgs).then((messages) => {
+                sendResponse({ messages });
+              }).catch((error) => {
+                sendResponse({ error });
+              });
+              break;
+        case 'createCategory':
+            createCategory(request.categoryKey, request.categoryTitle).then( (value) =>{
+                sendResponse({ value })
+            }).catch((error) => {
+                sendResponse({ error });
+            });
+            break;
+        case 'addMessageToCategory':
+            addMessageToCategory(request.categoryKey, request.message).then((value) => {
+                sendResponse({ value });
+            }).catch((error) => {
+                sendResponse({ error });
+            });
+            break;
+        default:
+            sendResponse({ error: 'Unknown action' });
+            break;
+    }
+});
   
