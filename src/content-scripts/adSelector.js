@@ -1,4 +1,4 @@
-window.adSelector = `
+window.AdFriend_adSelector = `
   iframe, 
   .ad, 
   .adContent, 
