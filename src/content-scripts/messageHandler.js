@@ -91,7 +91,8 @@ const defaultCategories = {
 window.getRandomMessage = function(numOfMsgs = 1) {
     return loadCategories().then((categories) => {
       const categoryKeys = Object.keys(categories);
-      const enabledCategoryKeys = categoryKeys.filter((key) => categories[key].enabled);
+      //filter for only enabled categories and categories with messages
+      const enabledCategoryKeys = categoryKeys.filter((key) => (categories[key].enabled && categories[key].messages.length > 0));
       const messages = [];
   
       for (let i = 0; i < numOfMsgs; i++) {
