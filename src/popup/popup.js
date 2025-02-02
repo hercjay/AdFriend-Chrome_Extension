@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const toggleExtension = document.getElementById("toggleExtension");
   
     // Load saved settings
-    chrome.storage.local.get("enabled", (data) => {
+    chrome.storage.sync.get("enabled", (data) => {
       toggleExtension.checked = data.enabled;
     });
   
