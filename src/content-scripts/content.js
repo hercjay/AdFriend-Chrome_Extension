@@ -1,18 +1,53 @@
 
+
 console.log("AdFriend Content Script Loaded");
 
 function replaceAds() {
 
-const adSelector = `
-            iframe, 
-            .ad, 
-            adContent, 
-            .ad_unit, 
-            .ads, 
-            [id^='ad_'], 
-            [id^='Advert_'], 
-            [class^='ad-']
-        `;
+function replaceAds() {
+
+    // Get the patterns from global adSelector variable defined in manifest.json and adSelector.js
+  const adElements = document.querySelectorAll(window.adSelector);
+
+  console.log("AdFriend: number of ads on this page is " + adElements.length);
+
+  adElements.forEach((ad) => {
+    let widget = document.createElement("div");
+    widget.className = "AdFriend-widget";
+    widget.innerHTML = `
+      <div class="AdFriend-message">
+        <h3>🌟 Stay Inspired!</h3>
+        <p>${getRandomMessage()}</p>
+      </div>
+    `;
+    //TODO: I will migrate the styles to a separate file using the classnames
+    widget.style.cssText = `
+      background: black;
+      padding: 15px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 14px;
+      color: white;
+    `;
+
+    console.log("AdFriend: Replacing this ad " + ad.outerHTML + " with this widget " + widget.outerHTML);
+
+    ad.replaceWith(widget);
+  });
+}
+
+function getRandomMessage() {
+  const messages = [
+    "Keep pushing forward!",
+    "You are capable of amazing things!",
+    "Take a deep breath and keep going!",
+    "Your hard work will pay off!"
+  ];
+  return messages[Math.floor(Math.random() * messages.length)];
+}
+
+// Run the function when the page loads
+replaceAds();
 
 const adElements = document.querySelectorAll(adSelector);
 
@@ -34,7 +69,7 @@ const adElements = document.querySelectorAll(adSelector);
       border-radius: 5px;
       text-align: center;
       font-size: 14px;
-      text-color: white;
+      color: white;
     `;
 
     console.log("AdFriend: Replacing this ad " + ad.getHTML() + " with this widget " + widget.getHTML());
