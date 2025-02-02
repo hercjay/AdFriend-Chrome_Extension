@@ -69,19 +69,24 @@ const defaultCategories = {
   }
 
 
-  // Get a random message
-  window.getRandomMessage = function() {
+// Get random messages
+window.getRandomMessage = function(numOfMsgs = 1) {
     return loadCategories().then((categories) => {
       const categoryKeys = Object.keys(categories);
       const enabledCategoryKeys = categoryKeys.filter((key) => categories[key].enabled);
-      const randomCategoryKey = enabledCategoryKeys[Math.floor(Math.random() * enabledCategoryKeys.length)];
-      const randomCategory = categories[randomCategoryKey];
-      const randomMessage = randomCategory.messages[Math.floor(Math.random() * randomCategory.messages.length)];
+      const messages = [];
   
-      return {
-        title: randomCategory.title,
-        content: randomMessage
-      };
+      for (let i = 0; i < numOfMsgs; i++) {
+        const randomCategoryKey = enabledCategoryKeys[Math.floor(Math.random() * enabledCategoryKeys.length)];
+        const randomCategory = categories[randomCategoryKey];
+        const randomMessage = randomCategory.messages[Math.floor(Math.random() * randomCategory.messages.length)];
+        messages.push({
+          title: randomCategory.title,
+          content: randomMessage
+        });
+      }
+  
+      return messages;
     });
   };
   
