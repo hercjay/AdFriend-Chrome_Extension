@@ -12,6 +12,31 @@
     <input type="checkbox" id="toggleExtension">
     Enable AdFriend
   </label>
+  <br/>
+  <br/>
+
+  <h1>Select Theme</h1>
+  <div class="theme-option">
+    <input type="radio" id="theme-light" name="theme" value="light">
+    <label for="theme-light">Light Theme</label>
+  </div>
+  <div class="theme-option">
+    <input type="radio" id="theme-dark" name="theme" value="dark">
+    <label for="theme-dark">Dark Theme</label>
+  </div>
+  <div class="custom-option">
+    <input type="radio" id="theme-custom" name="theme" value="custom">
+    <label for="theme-custom">Custom Theme</label>
+    <div>
+      <label for="background-color">Background Color:</label>
+      <input type="color" id="background-color" name="background-color">
+    </div>
+    <div>
+      <label for="text-color">Text Color:</label>
+      <input type="color" id="text-color" name="text-color">
+    </div>
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>
