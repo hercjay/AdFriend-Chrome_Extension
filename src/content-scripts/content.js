@@ -3,34 +3,51 @@
 console.log("AdFriend Content Script Loaded");
 
 function replaceAds() {
-
     // Get the patterns from global adSelector variable defined in manifest.json and adSelector.js
-  const adElements = document.querySelectorAll(window.AdFriend_adSelector);
-  console.log("AdFriend: number of ads on this page is " + adElements.length);
-  //use runtime to send a message to be received by another script that will return random messages
-    chrome.runtime.sendMessage({ action: "getRandomMessages", index: index }, (response) => {
-        let messages = response;
-    });
-
-    try {
-        adElements.forEach((ad, index) => {
+    const adElements = document.querySelectorAll(window.AdFriend_adSelector);
+  
+    console.log("AdFriend: number of ads on this page is " + adElements.length);
+  
+    // Use runtime to send a message to be received by another script that will return random messages
+    chrome.runtime.sendMessage({ action: "getRandomMessages", numOfMsgs: adElements.length }, (response) => {
+      if (chrome.runtime.lastError) {
+        console.error("AdFriend: Error sending message for getRandomMessages", chrome.runtime.lastError);
+        return;
+      }
+  
+      if (response.error) {
+        console.error("AdFriend: Error in response for getRandomMessages", response.error);
+        return;
+      }
+  
+      const messages = response.messages;
+      console.log("AdFriend: messages received for getRandomMessages are ", messages);
+  
+      if (messages.length > 0) {
+        try {
+          adElements.forEach((ad, index) => {
+            const message = messages[index];
             let widget = document.createElement("div");
             widget.className = "AdFriend-widget";
             widget.innerHTML = `
-                <div class="AdFriend-message">
-                    <h3>🌟 ${messages.title}</h3>
-                    <p>${messages.content}</p>
-                </div>
-            `;
-
+                          <div class="AdFriend-message">
+                            <h3><img src="${chrome.runtime.getURL('assets/icon-48.png')}" alt="" /> ${message.title}</h3>
+                            <p>${message.content}</p>
+                          </div>
+                        `;
+  
             console.log("AdFriend: Replacing this ad " + ad.outerHTML + " with this widget " + widget.outerHTML);
-
+  
             ad.replaceWith(widget);
-        });
-    } catch (error) {
-        console.error("AdFriend: Error replacing ads", error);
-    }
-}
+          });
+        } catch (error) {
+          console.error("AdFriend: Error replacing ads", error);
+        }
+      } else {
+        console.log("AdFriend: No messages found to replace ads with");
+      }
+    });
+  }
 
 
 function getPluginEnabledValue() {
@@ -59,7 +76,7 @@ function listenForPluginEnabledChanges() {
 getPluginEnabledValue().then((enabled) => {
     console.log("AdFriend: Plugin enabled status is", enabled);
   if (enabled === true) {
-    document.addEventListener('DOMContentLoaded', replaceAds);
+    document.addEventListener('DOMContentLoaded', replaceAds());
   } 
 });
 
