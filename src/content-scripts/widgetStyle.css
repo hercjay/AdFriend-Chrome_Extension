@@ -5,6 +5,8 @@
     --adfriend-text-align: center;
     --adfriend-font-size: 14px;
     --adfriend-color: white;
+    --logo-size: 22px;
+    --show-logo: visible; /* or hidden */
   }
   
   .AdFriend-widget {
@@ -14,4 +16,11 @@
     text-align: var(--adfriend-text-align);
     font-size: var(--adfriend-font-size);
     color: var(--adfriend-color);
+  }
+
+  .AdFriend-widget  img {
+    border-radius: 100%;
+    width: auto;
+    height: var(--logo-size);
+    visibility: var(--show-logo);
   }
