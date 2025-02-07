@@ -17,6 +17,8 @@ function  applyAdWidgetStyles(passedStyles) {
       document.documentElement.style.setProperty('--adfriend-font-size', selectedStyle.fontSize);
       document.documentElement.style.setProperty('--adfriend-color', selectedStyle.color);
       document.documentElement.style.setProperty('--adfriend-title-text-color', selectedStyle.titleTextColor);
+      document.documentElement.style.setProperty('--logo-size', selectedStyle.logoSize);
+      document.documentElement.style.setProperty('--show-logo', selectedStyle.showLogo);
     }
   });
 }
@@ -84,4 +86,7 @@ chrome.storage.onChanged.addListener((changes) => {
     loadStyles();
   }
 });
+
+//apply the current selected style
+loadStyles();
 
