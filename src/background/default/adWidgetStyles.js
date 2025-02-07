@@ -2,8 +2,8 @@
 
 
 export const defaultAdWidgetStyles = {
-    light: {
-      styleTitle: 'Light Style (Default)',
+    dark: {
+      styleTitle: 'Dark Style (Default)',
       background: 'black',
       padding: '15px',
       borderRadius: '5px',
@@ -14,8 +14,8 @@ export const defaultAdWidgetStyles = {
       logoSize: '22px',
       showLogo: 'visible'
     },
-    dark: {
-      styleTitle: 'Dark Style (Default)',
+    light: {
+      styleTitle: 'Light Style (Default)',
       background: 'white',
       padding: '15px',
       borderRadius: '5px',
@@ -25,5 +25,18 @@ export const defaultAdWidgetStyles = {
       titleTextColor: 'black',
       logoSize: '22px',
       showLogo: 'visible'
-    }
+    },
+    //teal: rgb(0, 128, 128)
+    teal: {
+        styleTitle: 'Teal Style I (Default)',
+        background: 'rgb(0, 36, 36)',
+        padding: '15px',
+        borderRadius: '5px',
+        textAlign: 'center',
+        fontSize: '14px',
+        color: 'rgba(255, 255, 255, 0.8)',
+        titleTextColor: 'rgb(0, 255, 255)',
+        logoSize: '22px',
+        showLogo: 'visible'
+      }
   };
