@@ -7,7 +7,7 @@
     --adfriend-font-size: 14px;
     --adfriend-color: rgba(255, 255, 255, 0.8);
     --logo-size: 22px;
-    --show-logo: visible; /* or hidden */
+    --show-logo: flex; /* or hidden */
   }
   
   .AdFriend-widget {
@@ -19,8 +19,19 @@
     color: var(--adfriend-color);
   }
 
+  .AdFriend-header {
+    display: flex; 
+    gap: 10px; 
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
   .AdFriend-widget .title {
     color: var(--adfriend-title-text-color);
+    font-size: calc(var(--adfriend-font-size) + 5px);
+    font-weight: bold;
+    margin: 0px !important;
   }
 
   .AdFriend-widget .msg-p {
@@ -31,5 +42,5 @@
     border-radius: 100%;
     width: auto;
     height: var(--logo-size);
-    visibility: var(--show-logo);
+    display: var(--show-logo);
   }
