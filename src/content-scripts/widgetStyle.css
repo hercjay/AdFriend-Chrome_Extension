@@ -3,8 +3,9 @@
     --adfriend-padding: 15px;
     --adfriend-border-radius: 5px;
     --adfriend-text-align: center;
+    --adfriend-title-text-color: white;
     --adfriend-font-size: 14px;
-    --adfriend-color: white;
+    --adfriend-color: rgba(255, 255, 255, 0.8);
     --logo-size: 22px;
     --show-logo: visible; /* or hidden */
   }
@@ -15,6 +16,14 @@
     border-radius: var(--adfriend-border-radius);
     text-align: var(--adfriend-text-align);
     font-size: var(--adfriend-font-size);
+    color: var(--adfriend-color);
+  }
+
+  .AdFriend-widget .title {
+    color: var(--adfriend-title-text-color);
+  }
+
+  .AdFriend-widget .msg-p {
     color: var(--adfriend-color);
   }
 
