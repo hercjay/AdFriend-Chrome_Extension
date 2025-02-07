@@ -36,10 +36,12 @@
 
       <p class="subtext">Configure the display style of the widget that you are shown in place of ads across the websites you visit.</p>
 
-
       <div id="adWidgetPreview" class="stickyTop" >
         <div class="AdFriend-message">
-          <h3 class="title"><img src="assets/icon-48.png" class="adWidgetPreview-icon" alt="" /> Preview Title</h3>
+            <div class="preview-header">
+              <img id="preview-icon"  /> 
+              <h3 class="title"> Preview Title </h3>
+            </div>
           <p class="msg-p">Preview content</p>
         </div>
       </div>
@@ -56,7 +58,11 @@
           <p class="subtext">
             Your changes are reflected in the preview above. Remember to hit "Save" after you have made your changes to save the style and apply it.
           </p>
-          <form id="custom-style-form" class="myForm">
+
+          <!-- button to toggle the form visibility -->
+          <button class="primaryBtn" id="custom-style-form-toggle-btn" type="submit">Show Custom Style Form</button>
+
+          <form id="custom-style-form" class="myForm hidden" >
             <div>
               <label for="background-color">Background Color:</label>
               <input type="color" id="background-color" name="background-color" value="#ffffff" required>
@@ -89,6 +95,7 @@
                 <option value="30px">30px</option>
                 <option value="40px">40px</option>
                 <option value="50px">50px</option>
+                <option value="100px">100px</option>
               </select>
             </div>
             <div>
@@ -107,7 +114,7 @@
               </select>
             </div>
             <div>
-              <label for="text-align">Text Align:</label>
+              <label for="text-align">Content Text Align:</label>
               <select id="text-align" name="text-align" required>
                 <option value="left">Left</option>
                 <option value="center" selected>Center</option>
@@ -115,63 +122,46 @@
                 <option value="justify">Justify</option>
               </select>
             </div>
-            <div>
-              <label for="style-title">Style Title:</label>
-              <input type="text" id="style-title" name="style-title" required>
+            <div class="myListTile" title="Show or hide the logo on the widget">
+              <p class="myListTile">Show Logo <input type="checkbox" checked class="myToggle" id="show-logo"></p>
             </div>
-            <button class="primaryBtn" id="save-theme" type="submit">Save Style</button>
+            <div>
+              <label for="logo-size">Logo Size:</label>
+              <select id="logo-size" name="logo-size" required>
+              <option value="12px">12px</option>
+              <option value="14px">14px</option>
+              <option value="16px">16px</option>
+              <option value="18px">18px</option>
+              <option value="20px">20px</option>
+              <option value="22px" selected>22px</option>
+              <option value="24px">24px</option>
+              <option value="26px">26px</option>
+              <option value="28px">28px</option>
+              <option value="30px">30px</option>
+              </select>
+            </div>
+            <div>
+              <label for="style-title">Style Name:</label>
+              <input type="text" id="style-title" name="style-title" placeholder="HercjayStyle" required>
+            </div>
+            <button class="primaryBtn" id="save-style" type="submit">Save Style</button>
+            <button class="dangerBtn" id="cancel-style" type="submit">Cancel</button>
           </form>
 
       </div>
 
-    </div>
-
+    </div> <!-- widget style myCard -->
     
 
-    <h1>Select Theme</h1>
-    <div class="theme-option">
-      <input type="radio" id="theme-light" name="theme" value="light">
-      <label for="theme-light">Light Theme</label>
-    </div>
-    <div class="theme-option">
-      <input type="radio" id="theme-dark" name="theme" value="dark">
-      <label for="theme-dark">Dark Theme</label>
-    </div>
-    <div class="custom-option">
-      <input type="radio" id="theme-custom" name="theme" value="custom">
-      <label for="theme-custom">Custom Theme</label>
-      <div>
-        <label for="background-color">Background Color:</label>
-        <input type="color" id="background-color" name="background-color">
-      </div>
-      <div>
-        <label for="text-color">Text Color:</label>
-        <input type="color" id="text-color" name="text-color">
-      </div>
-    </div>
+    <div class="myCard">
+      <h1 class="myCardTitle">Widget Content</h1>
 
-    <h1>Select Theme</h1>
-    <div class="theme-option">
-      <input type="radio" id="theme-light" name="theme" value="light">
-      <label for="theme-light">Light Theme</label>
-    </div>
-    <div class="theme-option">
-      <input type="radio" id="theme-dark" name="theme" value="dark">
-      <label for="theme-dark">Dark Theme</label>
-    </div>
-    <div class="custom-option">
-      <input type="radio" id="theme-custom" name="theme" value="custom">
-      <label for="theme-custom">Custom Theme</label>
-      <div>
-        <label for="background-color">Background Color:</label>
-        <input type="color" id="background-color" name="background-color">
-      </div>
-      <div>
-        <label for="text-color">Text Color:</label>
-        <input type="color" id="text-color" name="text-color">
-      </div>
-    </div>
-  </div>
+      <p class="subtext">Customize the types of contents displayed in the Ad-replacement widgets.</p>
+
+    </div> <!-- widget content myCard -->
+
+  </div>   <!-- container -->
+
 
   <script type="module" src="popup.js"></script>
 </body>
