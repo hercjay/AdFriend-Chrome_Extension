@@ -31,11 +31,13 @@ function replaceAds() {
             widget.className = "AdFriend-widget";
             widget.innerHTML = `
                           <div class="AdFriend-message">
-                            <h3 class="title"><img src="${chrome.runtime.getURL('assets/icon-48.png')}" alt="" /> ${message.title}</h3>
+                            <div class="AdFriend-header">
+                              <img src="${chrome.runtime.getURL('assets/icon-128.png')}" alt="" />
+                              <h3 class="title">${message.title}</h3>
+                            </div>
                             <p "msg-p">${message.content}</p>
                           </div>
                         `;
-  
             // console.log("AdFriend: Replacing this ad " + ad.outerHTML + " with this widget " + widget.outerHTML);
   
             ad.replaceWith(widget);
