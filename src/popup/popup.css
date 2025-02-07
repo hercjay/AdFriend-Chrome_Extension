@@ -8,18 +8,28 @@
     --glass-border: rgba(150, 150, 150, 0.9);
 
     --switch-circle-color: #333;
-    --switch-active-bg: rgb(159, 255, 139);
+    --switch-active-bg: var(--primary-color-lighter);
+    /* --switch-active-bg: rgb(159, 255, 139); */
     --switch-inactive-bg: rgb(255, 255, 255);
 
 
     --bg-color: #dadada;
     --text-primary: #333;
+
+
     --primary-color: #009ea3;
     --primary-color-lighter: #03f2fa;
     --primary-color-darker: #004d50;
+    --danger-color: #dc3545;
+    --danger-color-darker: #83000d;
+    --primary-color-gradient: linear-gradient(95deg, var(--primary-color-darker), var(--primary-color-lighter));
+    --primary-color-gradient-hover: linear-gradient(265deg, var(--primary-color-darker), var(--primary-color-lighter));
+
+
+
     --secondary-color: #6c757d;
     --success-color: #28a745;
-    --danger-color: #dc3545;
+    
     --warning-color: #ffc107;
     --info-color: #17a2b8;
     --light-color: #f8f9fa;
@@ -28,6 +38,19 @@
 }
 
 
+#preview-icon {
+    border-radius: 100%;
+    width: auto;
+    height: 22px;
+    display: flex;
+}
+
+.preview-header {
+    display: flex; 
+    gap: 10px; 
+    justify-content: center;
+    align-items: center;
+}
 
 
 body {
@@ -160,19 +183,24 @@ h1, h2, p {
     flex-direction: column;
     gap: 10px;
     width: 100%;
+    margin-top: 25px;
 }
 
 .myForm > div {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 5px;
+}
+
+.hidden {
+    display: none;
 }
 
 input:not(.myToggle), select {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
+    background: var(--glass-bg) !important;
     color: var(--input-text-color);
     outline: none;
 }
@@ -191,17 +219,35 @@ input[type="color"] {
 }
 
 .primaryBtn {
-    background: var(--primary-color);
+    background: var(--primary-color-gradient);
     color: white;
     border: none;
     border-radius: 5px;
     padding: 10px;
     cursor: pointer;
     outline: none;
+    width: 100%;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.5));
 }
 
 .primaryBtn:hover {
-    background: var(--primary-color-darker);
+    background: var(--primary-color-gradient-hover);
+}
+
+.dangerBtn {
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.5));
+}
+
+.dangerBtn:hover {
+    background: var(--danger-color-darker);
 }
 
 h1 {
@@ -213,9 +259,3 @@ h1 {
     width: 100%;
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 1em;
-    cursor: pointer;
-    margin-top: 20px;
-}
