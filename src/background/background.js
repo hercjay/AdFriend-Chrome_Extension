@@ -1,5 +1,6 @@
 
 
+import { defaultAdWidgetStyles } from './default/adWidgetStyles.js';
 import { getRandomMessages, createCategory, addMessageToCategory } from './messageHandler.js';
 
 
@@ -18,6 +19,17 @@ chrome.runtime.onInstalled.addListener(() => {
       enabled: true,
       messageIndex: 0
     });
+
+    // Set default adWidgetStyles
+    chrome.storage.sync.set({
+      adWidgetStyles: defaultAdWidgetStyles
+    });
+
+    // Set default selectedAdWidgetStyle to light
+    chrome.storage.sync.set({
+      selectedAdWidgetStyle: 'dark'
+    });
+
   });
   
   // Listen for changes in storage
