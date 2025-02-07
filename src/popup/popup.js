@@ -26,7 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const popUpThemeSwitch = document.getElementById("popUpThemeSwitch");
 
     const adfriendIcon = document.getElementById('adfriend-icon');
+    const adWidgetPreviewIcon = document.getElementById('preview-icon');
     adfriendIcon.src = chrome.runtime.getURL('assets/icon-128.png');
+    adWidgetPreviewIcon.src = chrome.runtime.getURL('assets/icon-128.png');
 
     let styles = {};
 
@@ -42,7 +44,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const borderRadiusInput = document.getElementById('border-radius');
     const fontSizeInput = document.getElementById('font-size');
     const textAlignInput = document.getElementById('text-align');
-    const saveStyleBtn = document.getElementById('save-style-btn');
+    const showLogoInput = document.getElementById('show-logo');
+    const logoSizeInput = document.getElementById('logo-size');
+    const saveStyleBtn = document.getElementById('save-style');
+    const cancelStyleBtn = document.getElementById('cancel-style');
+    const customStyleFormToggleBtn = document.getElementById('custom-style-form-toggle-btn');
 
 
 
@@ -130,7 +136,9 @@ document.addEventListener("DOMContentLoaded", function () {
         adWidgetPreview.style.fontSize = style.fontSize;
         adWidgetPreview.style.color = style.color;
         adWidgetPreview.querySelector('.title').style.color = style.titleTextColor;
-        adWidgetPreview.querySelector('.msg-p').style.color = style.color;
+        adWidgetPreview.querySelector('.title').style.fontSize = `calc(${style.fontSize} + 5px)`;    adWidgetPreview.querySelector('.msg-p').style.color = style.color;
+        adWidgetPreviewIcon.style.display = style.showLogo;
+        adWidgetPreviewIcon.style.height = style.logoSize;
         // adWidgetPreview.querySelector('.msg-p').style.opacity = '0.8';
       }
     }
@@ -147,10 +155,73 @@ document.addEventListener("DOMContentLoaded", function () {
         padding: paddingInput.value,
         borderRadius: borderRadiusInput.value,
         fontSize: fontSizeInput.value,
-        textAlign: textAlignInput.value
+        textAlign: textAlignInput.value,
+        logoSize: logoSizeInput.value,
+        showLogo: showLogoInput.checked ? 'flex' : 'none'
       };
       updateAdWidgetPreview(customStyle);
     }
+
+    //listen for form submission
+    customStyleForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      // Perform form validation here just incase it was missed by the browser
+      const styleKey = styleTitleInput.value.trim().split(' ').join('-').toLowerCase();
+      if (!styleKey) {
+        alert('Style name is required');
+        return;
+      }
+      if (styles[styleKey]) {
+        //append a timestamp to the style key to make it unique
+        styleKey = styleKey + Date.now().toString();
+        return;
+      }
+      const customStyle = {
+        styleTitle: styleTitleInput.value,
+        background: backgroundColorInput.value,
+        titleTextColor: titleTextColorInput.value,
+        color: contentTextColorInput.value,
+        padding: paddingInput.value,
+        borderRadius: borderRadiusInput.value,
+        fontSize: fontSizeInput.value,
+        textAlign: textAlignInput.value,
+        logoSize: logoSizeInput.value,
+        showLogo: showLogoInput.checked ? 'flex' : 'none'
+      };
+      addNewStyle(styleKey, customStyle);
+      //set the new style as the selected style
+      setSelectedAdWidgetStyle(styleKey).then(() => {
+        populateWidgetThemes();
+        customStyleForm.reset();
+        customStyleForm.classList.add('hidden');
+        customStyleFormToggleBtn.textContent = 'Show Custom Style Form';
+      }).catch((error) => {
+        console.error("AdFriend: Error setting new style as the selected style", error);
+      });
+    });
+
+
+    //hide and unhide the custom style form
+    customStyleFormToggleBtn.addEventListener('click', () => {
+      customStyleForm.classList.toggle('hidden');
+      customStyleFormToggleBtn.textContent = customStyleForm.classList.contains('hidden') ? 'Show Custom Style Form' : 'Hide Custom Style Form';
+      if(!customStyleForm.classList.contains('hidden')) {
+        //scroll to the ad preview widget
+        // adWidgetPreview.scrollIntoView({ behavior: 'smooth', block: 'start'  });
+        // window.scrollBy(0, 350);
+      }
+    });
+
+    cancelStyleBtn.addEventListener('click', () => {
+      if (!customStyleForm.classList.contains('hidden')) {
+        customStyleForm.classList.add('hidden');
+        customStyleFormToggleBtn.textContent = 'Show Custom Style Form';
+        //scroll to the ad preview widget
+        customStyleFormToggleBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.scrollBy(0, -250);
+      }
+    });
+    
 
 
     function getStyles() {
@@ -172,6 +243,31 @@ document.addEventListener("DOMContentLoaded", function () {
             resolve(data.selectedAdWidgetStyle);
           } else {
             reject('No selected style found in storage');
+          }
+        });
+      });
+    }
+
+    function setSelectedAdWidgetStyle(styleKey) {
+      return new Promise((resolve, reject) => {
+        chrome.storage.sync.set({ selectedAdWidgetStyle: styleKey }, () => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else {
+            resolve();
+          }
+        });
+      });
+    }
+
+    function  saveStyles(styles) {
+      return new Promise((resolve, reject) => {
+        chrome.storage.sync.set({ adWidgetStyles: styles }, () => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else {
+            console.log("AdFriend: Styles saved to storage", styles);
+            resolve();
           }
         });
       });
