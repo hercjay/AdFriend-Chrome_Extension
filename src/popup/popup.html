@@ -3,40 +3,120 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AdFriend Settings</title>
+  <title>AdFriend - Chrome Extension</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <h2>AdFriend Settings</h2>
-  <label>
-    <input type="checkbox" id="toggleExtension">
-    Enable AdFriend
-  </label>
-  <br/>
-  <br/>
-
-  <h1>Select Theme</h1>
-  <div class="theme-option">
-    <input type="radio" id="theme-light" name="theme" value="light">
-    <label for="theme-light">Light Theme</label>
-  </div>
-  <div class="theme-option">
-    <input type="radio" id="theme-dark" name="theme" value="dark">
-    <label for="theme-dark">Dark Theme</label>
-  </div>
-  <div class="custom-option">
-    <input type="radio" id="theme-custom" name="theme" value="custom">
-    <label for="theme-custom">Custom Theme</label>
-    <div>
-      <label for="background-color">Background Color:</label>
-      <input type="color" id="background-color" name="background-color">
+  <div class="container">
+    <div class="header">
+      <img id="adfriend-icon" alt="" style="width: 48px; border-radius: 100%;" />
+      <h1>AdFriend</h1>
     </div>
-    <div>
-      <label for="text-color">Text Color:</label>
-      <input type="color" id="text-color" name="text-color">
+    <div class="header-desc">
+      <p>AdFriend helps you replace ads with "Positive" widgets on the websites you visit.</p>
+      <small><strong>Version 1.0.0</strong></small>
+    </div>
+
+    <div class="myCard">
+      <h1 class="myCardTitle">Core Settings</h1>
+      <div class="myCardContentGroup">
+        <div class="myListTile ">
+          <p>Enable AdFriend Plugin</p>
+          <input type="checkbox" class="myToggle" id="toggleExtension">
+        </div>
+        <div class="myListTile" title="Enable or Disable Dark Mode for this PopUp Window">
+            <p>Dark Mode</p>
+            <input type="checkbox" class="myToggle" id="popUpThemeSwitch">
+        </div>
+      </div>
+    </div>
+
+    <div class="myCard">
+      <h1 class="myCardTitle">Widget Style</h1>
+
+      <p class="subtext">Configure the display style of the widget that you are shown in place of ads across the websites you visit.</p>
+
+      <h3>Select Style</h3>
+
+      <!-- stored styles will be loaded here using js -->
+      <select id="adWidgetStyleSelect" name="Widget Style" value="light">
+      </select>
+
+      <div class="myListTile" title="Enable or Disable Dark Mode for this PopUp Window">
+        <input type="radio" id="theme-light" name="theme" value="light">
+        <label for="theme-light">Light Theme</label>
+      </div>
+
+    <div class="theme-option">
+      <input type="radio" id="theme-light" name="theme" value="light">
+      <label for="theme-light">Light Theme</label>
+    </div>
+    <div class="theme-option">
+      <input type="radio" id="theme-dark" name="theme" value="dark">
+      <label for="theme-dark">Dark Theme</label>
+    </div>
+    <div class="custom-option">
+      <input type="radio" id="theme-custom" name="theme" value="custom">
+      <label for="theme-custom">Custom Theme</label>
+      <div>
+        <label for="background-color">Background Color:</label>
+        <input type="color" id="background-color" name="background-color">
+      </div>
+      <div>
+        <label for="text-color">Text Color:</label>
+        <input type="color" id="text-color" name="text-color">
+      </div>
+    </div>
+
+    </div>
+
+    
+
+    <h1>Select Theme</h1>
+    <div class="theme-option">
+      <input type="radio" id="theme-light" name="theme" value="light">
+      <label for="theme-light">Light Theme</label>
+    </div>
+    <div class="theme-option">
+      <input type="radio" id="theme-dark" name="theme" value="dark">
+      <label for="theme-dark">Dark Theme</label>
+    </div>
+    <div class="custom-option">
+      <input type="radio" id="theme-custom" name="theme" value="custom">
+      <label for="theme-custom">Custom Theme</label>
+      <div>
+        <label for="background-color">Background Color:</label>
+        <input type="color" id="background-color" name="background-color">
+      </div>
+      <div>
+        <label for="text-color">Text Color:</label>
+        <input type="color" id="text-color" name="text-color">
+      </div>
+    </div>
+
+    <h1>Select Theme</h1>
+    <div class="theme-option">
+      <input type="radio" id="theme-light" name="theme" value="light">
+      <label for="theme-light">Light Theme</label>
+    </div>
+    <div class="theme-option">
+      <input type="radio" id="theme-dark" name="theme" value="dark">
+      <label for="theme-dark">Dark Theme</label>
+    </div>
+    <div class="custom-option">
+      <input type="radio" id="theme-custom" name="theme" value="custom">
+      <label for="theme-custom">Custom Theme</label>
+      <div>
+        <label for="background-color">Background Color:</label>
+        <input type="color" id="background-color" name="background-color">
+      </div>
+      <div>
+        <label for="text-color">Text Color:</label>
+        <input type="color" id="text-color" name="text-color">
+      </div>
     </div>
   </div>
 
-  <script src="popup.js"></script>
+  <script type="module" src="popup.js"></script>
 </body>
 </html>
