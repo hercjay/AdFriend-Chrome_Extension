@@ -16,8 +16,8 @@ function  applyAdWidgetStyles(passedStyles) {
       document.documentElement.style.setProperty('--adfriend-text-align', selectedStyle.textAlign);
       document.documentElement.style.setProperty('--adfriend-font-size', selectedStyle.fontSize);
       document.documentElement.style.setProperty('--adfriend-color', selectedStyle.color);
+      document.documentElement.style.setProperty('--adfriend-title-text-color', selectedStyle.titleTextColor);
     }
-    console.log("AdFriend: Styles applied. new background colour on doc is " + document.documentElement.style.getPropertyValue('--adfriend-background'), selectedStyle);
   });
 }
 
