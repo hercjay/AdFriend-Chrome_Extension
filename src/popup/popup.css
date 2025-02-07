@@ -14,7 +14,9 @@
 
     --bg-color: #dadada;
     --text-primary: #333;
-    --primary-color: #007bff;
+    --primary-color: #009ea3;
+    --primary-color-lighter: #03f2fa;
+    --primary-color-darker: #004d50;
     --secondary-color: #6c757d;
     --success-color: #28a745;
     --danger-color: #dc3545;
@@ -151,6 +153,55 @@ h1, h2, p {
     font-size: 1.5em;
     text-align: center;
     margin-bottom: 8px;
+}
+
+.myForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.myForm > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+input:not(.myToggle), select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--input-text-color);
+    outline: none;
+}
+
+
+input[type="color"] {
+    padding: 0;
+    width: 100%;
+    height: 40px;
+}
+
+.stickyTop {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.primaryBtn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+}
+
+.primaryBtn:hover {
+    background: var(--primary-color-darker);
 }
 
 h1 {
