@@ -221,6 +221,18 @@ input:not(.myToggle), select {
     outline: none;
 }
 
+textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg) !important;
+    color: var(--input-text-color);
+    outline: none;
+    min-height: 100px;
+    max-height: 250px;
+    height: auto;
+}
+
 
 input[type="color"] {
     padding: 0;
