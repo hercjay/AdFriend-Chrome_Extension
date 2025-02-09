@@ -22,7 +22,7 @@ function replaceAds() {
   
       const messages = response.messages;
       console.log("AdFriend: messages received for getRandomMessages are ", messages);
-  
+
       if (messages.length > 0) {
         try {
           adElements.forEach((ad, index) => {
