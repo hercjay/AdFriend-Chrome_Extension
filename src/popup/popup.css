@@ -233,6 +233,24 @@ textarea {
     height: auto;
 }
 
+.toast{
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    width: 80%;
+    margin: auto;
+    transform: translateX(-50%);
+    padding: 10px;
+    border-radius: 5px;
+    background: var(--primary-color-darker);
+    border: 2px solid var(--glass-border);
+    z-index: 999;
+}
+
+.toast p {
+    color: white !important;
+    text-align: center;
+}
 
 input[type="color"] {
     padding: 0;
