@@ -22,20 +22,28 @@
   }
 
   // Create a new category
-    export function  createCategory(categoryKey, categoryTitle) {
+    export function  createCategory(categoryKey, content) {
         return loadCategories().then((categories) => {
         const lowerCaseCategoryKey = categoryKey.toLowerCase();
         const existingCategoryKeys = Object.keys(categories).map(key => key.toLowerCase());
     
         if (!existingCategoryKeys.includes(lowerCaseCategoryKey)) {
             categories[categoryKey] = {
-            title: categoryTitle,
+            title: content.title,
+            type: content.type,
             enabled: true,
-            messages: []
+            messages: content.messages
             };
             return saveCategories(categories);
         } else {
-            return Promise.reject(`Category ${categoryKey} already exists.`);
+          // If category key already exists, append a timestamp to the key to make it unique
+          categories[categoryKey + Date.now().toString()] = {
+            title: content.title,
+            type: content.type,
+            enabled: true,
+            messages: content.messages
+            };
+            return saveCategories(categories);
         }
         });
     }

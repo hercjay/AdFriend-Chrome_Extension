@@ -64,7 +64,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       return true; // Will respond asynchronously
     case 'createCategory':
-      createCategory(request.categoryKey, request.categoryTitle).then((value) => {
+      createCategory(request.categoryKey, request.content).then((value) => {
         sendResponse({ value });
       }).catch((error) => {
         sendResponse({ error });
