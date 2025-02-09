@@ -31,13 +31,18 @@ document.addEventListener("DOMContentLoaded", function () {
     adWidgetPreviewIcon.src = chrome.runtime.getURL('assets/icon-128.png');
 
     let styles = {};
+    let adWidgetContents = {};
 
 
     const adWidgetStyleSelect = document.getElementById('adWidgetStyleSelect');
     const adWidgetPreview = document.getElementById('adWidgetPreview');
     const widgetContentSelectionGroup = document.getElementById('widgetContentSelectionGroup');
     const customStyleForm = document.getElementById('custom-style-form');
+    const customContentForm = document.getElementById('custom-content-form');
     const styleTitleInput = document.getElementById('style-title');
+    const contentTitleInput = document.getElementById('content-title');
+    const contentCategoryInput = document.getElementById('content-category');
+    const contentMessagesInput = document.getElementById('content-messages');
     const backgroundColorInput = document.getElementById('background-color');
     const titleTextColorInput = document.getElementById('title-text-color');
     const contentTextColorInput = document.getElementById('text-color');
@@ -49,6 +54,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const logoSizeInput = document.getElementById('logo-size');
     const saveStyleBtn = document.getElementById('save-style');
     const cancelStyleBtn = document.getElementById('cancel-style');
+    const cancelContentBtn = document.getElementById('cancel-content');
+    const customContentFormToggleBtn = document.getElementById('custom-content-form-toggle-btn');
     const customStyleFormToggleBtn = document.getElementById('custom-style-form-toggle-btn');
 
 
@@ -163,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
       updateAdWidgetPreview(customStyle);
     }
 
-    //listen for form submission
+    //listen for custom style form submission
     customStyleForm.addEventListener('submit', (event) => {
       event.preventDefault();
       // Perform form validation here just incase it was missed by the browser
@@ -175,7 +182,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (styles[styleKey]) {
         //append a timestamp to the style key to make it unique
         styleKey = styleKey + Date.now().toString();
-        return;
       }
       const customStyle = {
         styleTitle: styleTitleInput.value,
@@ -202,7 +208,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    //hide and unhide the custom style form
+    //listen for custom content form submission
+    customContentForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      // Perform form validation here just incase it was missed by the browser
+      let contentKey = contentCategoryInput.value.trim().split(' ').join('-').toLowerCase();
+      if (!contentKey) {
+        alert('Content category is required');
+        return;
+      }
+      if (adWidgetContents[contentKey]) {
+        //append a timestamp to the content key to make it unique
+        contentKey = contentKey + Date.now().toString();
+      }
+      const customContent = {
+        title: contentTitleInput.value,
+        enabled: true,
+        type: contentCategoryInput.value,
+        contentMessages: contentMessagesInput.value.split('\n').filter(message => message.trim() !== "")
+      };    console.log("AdFriend: Custom content", customContent);
+      console.log("AdFriend: Custom contentKey", contentKey);
+      addNewContent(contentKey, customContent);
+    });
+
+
+    //hide and unhide the custom style and content forms
     customStyleFormToggleBtn.addEventListener('click', () => {
       customStyleForm.classList.toggle('hidden');
       customStyleFormToggleBtn.textContent = customStyleForm.classList.contains('hidden') ? 'Show Custom Style Form' : 'Hide Custom Style Form';
@@ -211,6 +241,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // adWidgetPreview.scrollIntoView({ behavior: 'smooth', block: 'start'  });
         // window.scrollBy(0, 350);
       }
+    });
+
+    customContentFormToggleBtn.addEventListener('click', () => {
+      customContentForm.classList.toggle('hidden');
+      customContentFormToggleBtn.textContent = customContentForm.classList.contains('hidden') ? 'Show Custom Content Form' : 'Hide Custom Content Form';
     });
 
     cancelStyleBtn.addEventListener('click', () => {
@@ -223,40 +258,54 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+    cancelContentBtn.addEventListener('click', () => {
+      if (!customContentForm.classList.contains('hidden')) {
+        customContentForm.classList.add('hidden');
+        customContentFormToggleBtn.textContent = 'Show Custom Content Form';
+        customContentFormToggleBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.scrollBy(0, -250);
+      }
+    });
+
 
     // populate the widget content selection group
-    if (widgetContentSelectionGroup.children.length === 0) {
-      chrome.storage.sync.get('adWidgetContents', (data) => {
-        if (data.adWidgetContents) {
-          const widgetContents = data.adWidgetContents;
-          widgetContentSelectionGroup.innerHTML = '';
-          for (const categoryKey in widgetContents) {
-            const category = widgetContents[categoryKey];
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'myListTile mb';
-            categoryDiv.innerHTML = `
-              <div class="myListTileTextLeft">
-                <p>${category.type}</p>
-                <small class="subtext">${category.title}</small>
-              </div>
-              <input ${category.enabled ? ' checked ' : ''} type="checkbox" class="myToggle" id="${categoryKey}">
-            `;
-            widgetContentSelectionGroup.appendChild(categoryDiv);
+    populateWidgetContentSelectionGroup();
 
-            // Add event listener to the checkbox
-            const checkbox = categoryDiv.querySelector('input[type="checkbox"]');
-            checkbox.addEventListener('change', (event) => {
-              const isChecked = event.target.checked;
-              widgetContents[categoryKey].enabled = isChecked;
-              chrome.storage.sync.set({ adWidgetContents: widgetContents }, () => {
-                console.log(`AdFriend: ${categoryKey} updated to ${isChecked}`);
+    function populateWidgetContentSelectionGroup(forceRefresh = false) {
+      if (widgetContentSelectionGroup.children.length === 0 || forceRefresh) {
+        chrome.storage.sync.get('adWidgetContents', (data) => {
+          if (data.adWidgetContents) {
+            adWidgetContents = data.adWidgetContents;
+            const widgetContents = data.adWidgetContents;
+            widgetContentSelectionGroup.innerHTML = '';
+            for (const categoryKey in widgetContents) {
+              const category = widgetContents[categoryKey];
+              const categoryDiv = document.createElement('div');
+              categoryDiv.className = 'myListTile mb';
+              categoryDiv.innerHTML = `
+                <div class="myListTileTextLeft">
+                  <p>${category.type}</p>
+                  <small class="subtext">${category.title}</small>
+                </div>
+                <input ${category.enabled ? ' checked ' : ''} type="checkbox" class="myToggle" id="${categoryKey}">
+              `;
+              widgetContentSelectionGroup.appendChild(categoryDiv);
+  
+              // Add event listener to the checkbox
+              const checkbox = categoryDiv.querySelector('input[type="checkbox"]');
+              checkbox.addEventListener('change', (event) => {
+                const isChecked = event.target.checked;
+                widgetContents[categoryKey].enabled = isChecked;
+                chrome.storage.sync.set({ adWidgetContents: widgetContents }, () => {
+                  console.log(`AdFriend: ${categoryKey} updated to ${isChecked}`);
+                });
               });
-            });
+            }
+          } else {
+            console.error('AdFriend: No widget contents found in storage');
           }
-        } else {
-          console.error('AdFriend: No widget contents found in storage');
-        }
-      });
+        });
+      }
     }
 
     
@@ -319,6 +368,29 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("AdFriend: Error adding new style", error);
       });
     }
+
+    function addNewContent(categoryKey, content) {
+      //send a message
+      chrome.runtime.sendMessage(
+        { action: 'createCategory', categoryKey: categoryKey, content: content },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            console.error("AdFriend: Error sending message for createCategory", chrome.runtime.lastError);
+            return;
+          }
+          if (response.error) {
+            console.error("AdFriend: Error in response for createCategory", response.error);
+            return;
+          }
+          console.log("AdFriend: Category created successfully", response.value);
+          //update the widget content selection group
+          populateWidgetContentSelectionGroup(true);
+          customContentForm.reset();
+          customContentForm.classList.add('hidden');
+          customContentFormToggleBtn.textContent = 'Show Custom Content Form';
+        }
+      );
+    };
 
 
   }); // document loaded
