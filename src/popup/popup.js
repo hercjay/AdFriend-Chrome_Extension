@@ -83,6 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Update settings when toggled
     toggleExtension.addEventListener("change", () => {
       chrome.storage.sync.set({ enabled: toggleExtension.checked });
+      showToast();
     });
 
     popUpThemeSwitch.addEventListener("change", () => {
@@ -132,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const selectedStyle = event.target.value;
       updateAdWidgetPreview(styles[selectedStyle]);
       chrome.storage.sync.set({ selectedAdWidgetStyle: selectedStyle });
+      showToast();
     });
 
 
@@ -202,6 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
         customStyleForm.reset();
         customStyleForm.classList.add('hidden');
         customStyleFormToggleBtn.textContent = 'Show Custom Style Form';
+        showToast('New Widget Style Saved!')
       }).catch((error) => {
         console.error("AdFriend: Error setting new style as the selected style", error);
       });
@@ -212,6 +215,13 @@ document.addEventListener("DOMContentLoaded", function () {
     customContentForm.addEventListener('submit', (event) => {
       event.preventDefault();
       // Perform form validation here just incase it was missed by the browser
+      if(contentMessagesInput.value.trim() == "") {
+        showToast("Enter valid content messages!");
+        return;
+      } else if(contentMessagesInput.value.trim().length < 2) {
+        showToast("Content message cannot be less than two characters!");
+        return;
+      }
       let contentKey = contentCategoryInput.value.trim().split(' ').join('-').toLowerCase();
       if (!contentKey) {
         alert('Content category is required');
@@ -298,6 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 widgetContents[categoryKey].enabled = isChecked;
                 chrome.storage.sync.set({ adWidgetContents: widgetContents }, () => {
                   console.log(`AdFriend: ${categoryKey} updated to ${isChecked}`);
+                  showToast();
                 });
               });
             }
@@ -369,6 +380,20 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
+
+
+    function showToast (msg = "Saved!") {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-message');
+      toastMsg.innerHTML = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3000)
+    }
+
+
+
     function addNewContent(categoryKey, content) {
       //send a message
       chrome.runtime.sendMessage(
@@ -388,6 +413,7 @@ document.addEventListener("DOMContentLoaded", function () {
           customContentForm.reset();
           customContentForm.classList.add('hidden');
           customContentFormToggleBtn.textContent = 'Show Custom Content Form';
+          showToast('New Content Type Saved!')
         }
       );
     };
