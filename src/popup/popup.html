@@ -161,9 +161,44 @@
 
       <p class="subtext">Customize the types of contents displayed in the Ad-replacement widgets. Your changes will take effect on subsequent page loads.</p>
       <p class="subtext"><strong>Take care not to disable all!</strong></p>
+      
       <!-- will be populated by list of content types in storage -->
       <div class="myCardContentGroup" id="widgetContentSelectionGroup">
       </div>
+
+      <div class="customWidgetContentDiv">
+        
+        <h3>Add Your Own Content</h3>
+        <p class="subtext">
+          Add your own content type to be displayed in the Ad-replacement widgets. You create a content category and then add contents to it. The contents added will randomly be displayed in the widgets.
+        </p>
+        <p class="subtext">
+          Make sure to hit "Save" after you have added your content to save the changes.
+        </p>
+
+        <!-- button to toggle the form visibility -->
+        <button class="primaryBtn" id="custom-content-form-toggle-btn" >Show Custom Content Form</button>
+
+        <form id="custom-content-form" class="myForm hidden" >
+            <div title="Displayed as the category of the content in settings above, but not in the widget">
+              <label for="content-category">Content Category Name:</label>
+              <input type="text" id="content-category" name="content-category" placeholder="Fun Facts" required>
+            </div>
+            <div title="Displayed as the title of the widget">
+              <label for="content-category">Title Text:</label>
+              <input type="text" id="content-title" name="content-title" placeholder="Did You Know?" required>
+            </div>
+            <div>
+              <label for="content-message">Content Message:</label>
+                <small>Add multiple messages by separating each message with a new line</small>
+              <textarea autosize id="content-messages" name="content-messages" placeholder="Enter your messages here" required></textarea>
+            </div>
+          <button class="primaryBtn" id="save-content" type="submit">Save Content</button>
+          <button class="dangerBtn" id="cancel-content" type="submit">Cancel</button>
+        </form>
+
+    </div>
+      
 
 
 
