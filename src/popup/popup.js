@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const adWidgetStyleSelect = document.getElementById('adWidgetStyleSelect');
     const adWidgetPreview = document.getElementById('adWidgetPreview');
+    const widgetContentSelectionGroup = document.getElementById('widgetContentSelectionGroup');
     const customStyleForm = document.getElementById('custom-style-form');
     const styleTitleInput = document.getElementById('style-title');
     const backgroundColorInput = document.getElementById('background-color');
@@ -221,6 +222,43 @@ document.addEventListener("DOMContentLoaded", function () {
         window.scrollBy(0, -250);
       }
     });
+
+
+    // populate the widget content selection group
+    if (widgetContentSelectionGroup.children.length === 0) {
+      chrome.storage.sync.get('adWidgetContents', (data) => {
+        if (data.adWidgetContents) {
+          const widgetContents = data.adWidgetContents;
+          widgetContentSelectionGroup.innerHTML = '';
+          for (const categoryKey in widgetContents) {
+            const category = widgetContents[categoryKey];
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'myListTile mb';
+            categoryDiv.innerHTML = `
+              <div class="myListTileTextLeft">
+                <p>${category.type}</p>
+                <small class="subtext">${category.title}</small>
+              </div>
+              <input ${category.enabled ? ' checked ' : ''} type="checkbox" class="myToggle" id="${categoryKey}">
+            `;
+            widgetContentSelectionGroup.appendChild(categoryDiv);
+
+            // Add event listener to the checkbox
+            const checkbox = categoryDiv.querySelector('input[type="checkbox"]');
+            checkbox.addEventListener('change', (event) => {
+              const isChecked = event.target.checked;
+              widgetContents[categoryKey].enabled = isChecked;
+              chrome.storage.sync.set({ adWidgetContents: widgetContents }, () => {
+                console.log(`AdFriend: ${categoryKey} updated to ${isChecked}`);
+              });
+            });
+          }
+        } else {
+          console.error('AdFriend: No widget contents found in storage');
+        }
+      });
+    }
+
     
 
 
