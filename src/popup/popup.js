@@ -235,8 +235,9 @@ document.addEventListener("DOMContentLoaded", function () {
         title: contentTitleInput.value,
         enabled: true,
         type: contentCategoryInput.value,
-        contentMessages: contentMessagesInput.value.split('\n').filter(message => message.trim() !== "")
-      };    console.log("AdFriend: Custom content", customContent);
+        messages: contentMessagesInput.value.split('\n').filter(message => message.trim() !== "")
+      };    
+      console.log("AdFriend: Custom content", customContent);
       console.log("AdFriend: Custom contentKey", contentKey);
       addNewContent(contentKey, customContent);
     });
