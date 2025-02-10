@@ -1,6 +1,9 @@
+
+
 export const defaultAdWidgetContents = {
     motivationalQuotesDefault: {
       enabled: true,
+      isQuiz: false,
       title: "Stay Motivated!",
       type: "Motivational Quotes",
       messages: [
@@ -16,6 +19,7 @@ export const defaultAdWidgetContents = {
     },
     activityRemindersDefault: {
       enabled: true,
+      isQuiz: false,
       title: "Stay Active!",
       type: "Activity Reminders",
       messages: [
@@ -30,7 +34,8 @@ export const defaultAdWidgetContents = {
       ]
     },
     funFactsDefault: {
-        enabled: false,
+        enabled: true,
+        isQuiz: false,
         title: "Did You Know?",
         type: "Fun Facts",
         messages: [
@@ -43,5 +48,19 @@ export const defaultAdWidgetContents = {
           "The Eiffel Tower can be 15 cm taller during the summer due to the expansion of iron in the heat.",
           "Wombat poop is cube-shaped. This helps it stay in place and mark their territory."
         ]
-      }
+      },
+    defaultGeographyQuiz: {
+      enabled: true,
+      isQuiz: true,
+      title: "Geography Quiz Time!",
+      type: "Geography Quiz",
+      messages: ["a", "placeholder"], // will be populated by querying LOCALSTORAGE using the key (stored elsewhere due to max storage size limitations in chrome storage)
+    },
+    defaultScienceQuiz: {
+      enabled: true,
+      isQuiz: true,
+      title: "Science Quiz Time!",
+      type: "Science Quiz",
+      messages: ["a", "placeholder"], // will be populated by querying LOCALSTORAGE using the key (stored elsewhere due to max storage size limitations in chrome storage)
+    },
   };
