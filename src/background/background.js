@@ -36,6 +36,11 @@ chrome.runtime.onInstalled.addListener(() => {
       adWidgetContents: defaultAdWidgetContents
     });
 
+    //set default xp value
+    chrome.storage.sync.set({
+      adfriendXP: 0
+    });
+
   });
   
   // Listen for changes in storage
