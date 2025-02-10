@@ -101,8 +101,12 @@ export function getRandomMessages(numOfMsgs = 1) {
     for (let i = 0; i < numOfMsgs; i++) {
       const randomCategoryKey = validCatKeys[Math.floor(Math.random() * validCatKeys.length)];
       const randomCategory = categories[randomCategoryKey];
-      const randomMessage = randomCategory.messages[Math.floor(Math.random() * randomCategory.messages.length)];
+      let randomMessage = {};
+      
+      randomMessage = randomCategory.messages[Math.floor(Math.random() * randomCategory.messages.length)];
       messages.push({
+        key: randomCategoryKey, //for quiz, we use this key to get quiz messages from local storage in content script
+        isQuiz: randomCategory.isQuiz,
         title: randomCategory.title,
         content: randomMessage
       });
@@ -111,6 +115,10 @@ export function getRandomMessages(numOfMsgs = 1) {
     return messages;
   });
 }
+
+
+
+
   
 
 
