@@ -5,6 +5,7 @@ console.log("AdFriend Content Script Loaded");
 
 const myQuizList = {
   defaultGeographyQuiz: window.defaultGeographyQuiz,
+  defaultScienceQuiz: window.defaultScienceQuiz,
   //I can add ore here
 }
 
@@ -41,6 +42,11 @@ function replaceAds() {
               console.log("AdFriend: Quiz data received for getRandomMessages are ", quizData);
               widget.innerHTML = `
                         <div class="AdFriend-message">
+
+                          <div id="toast" class="toast hidden">
+                            <p id="toast-message">Sample Toast Message</p>
+                          </div>
+
                           <div class="AdFriend-header">
                           <img src="${chrome.runtime.getURL('assets/icon-128.png')}" alt="" />
                           <h3 class="title">${message.title}</h3>
@@ -74,11 +80,18 @@ function replaceAds() {
                 option.addEventListener('click', () => {
                 const answerDiv = widget.querySelector('.AdFriend-quiz-answer');
                 answerDiv.style.display = 'flex';
-                if (quizData.options[index].correct) {
-                  option.style.color = 'green';
-                } else {
-                  option.style.color = 'red';
-                }
+                if (!widget.querySelector('.AdFriend-quiz-options-group').classList.contains('attempted')) {
+                  if (quizData.options[index].correct) {
+                    option.style.color = 'green';
+                    showToast("Correct! You have earned 1 XP!");
+                    awardXP(1);
+                  } else {
+                    option.style.color = 'red';
+                    showToast("Incorrect! Try again next time to earn XP!");
+                  }
+                  widget.querySelector('.AdFriend-quiz-options-group').classList.add('attempted');
+                }      option.style.background = 'rgba(0, 158, 163, 0.2)';
+                option.style.fontWeight = 'bold';
                 });
               });      } else {
               widget.innerHTML = `
@@ -139,4 +152,22 @@ listenForPluginEnabledChanges();
 
 function getRandomQuizMessage(key) {
     return myQuizList[key][Math.floor(Math.random() * myQuizList[key].length)];
+}
+
+function showToast (msg = "Saved!") {
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toast-message');
+  toastMsg.innerHTML = msg;
+  toast.classList.remove('hidden');
+  setTimeout(() => {
+    toast.classList.add('hidden');
+  }, 3000)
+}
+
+function awardXP(amount = 1) {
+  chrome.storage.sync.get('adfriendXP', (data) => {
+    console.log("AdFriend: awarding XP. current xp is ", data.adfriendXP);
+    const xp = data.adfriendXP || 0;
+    chrome.storage.sync.set({ adfriendXP: xp + amount });
+  });
 }
