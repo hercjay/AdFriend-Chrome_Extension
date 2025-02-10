@@ -1,6 +1,12 @@
 
 
+
 console.log("AdFriend Content Script Loaded");
+
+const myQuizList = {
+  defaultGeographyQuiz: window.defaultGeographyQuiz,
+  //I can add ore here
+}
 
 function replaceAds() {
     // Get the patterns from global adSelector variable defined in manifest.json and adSelector.js
@@ -20,26 +26,71 @@ function replaceAds() {
         return;
       }
   
-      const messages = response.messages;
+      let messages = response.messages;
       console.log("AdFriend: messages received for getRandomMessages are ", messages);
 
       if (messages.length > 0) {
         try {
           adElements.forEach((ad, index) => {
-            const message = messages[index];
+            let message = messages[index];
             let widget = document.createElement("div");
             widget.className = "AdFriend-widget";
-            widget.innerHTML = `
-                          <div class="AdFriend-message">
-                            <div class="AdFriend-header">
-                              <img src="${chrome.runtime.getURL('assets/icon-128.png')}" alt="" />
-                              <h3 class="title">${message.title}</h3>
+            if(message.isQuiz === true){
+              //get random quiz content using the key from localstorage
+              const quizData = getRandomQuizMessage(message.key)
+              console.log("AdFriend: Quiz data received for getRandomMessages are ", quizData);
+              widget.innerHTML = `
+                        <div class="AdFriend-message">
+                          <div class="AdFriend-header">
+                          <img src="${chrome.runtime.getURL('assets/icon-128.png')}" alt="" />
+                          <h3 class="title">${message.title}</h3>
+                          </div>
+                          
+                          <div class="AdFriend-quiz">
+
+                            <p>${quizData.question}</p>
+                            
+                            <div class="AdFriend-quiz-options-group">
+                              <p class="AdFriend-quiz-option">${quizData.options[0].text}</p>
+                              <p class="AdFriend-quiz-option">${quizData.options[1].text}</p>
+                              <p class="AdFriend-quiz-option">${quizData.options[2].text}</p>
+                              <p class="AdFriend-quiz-option">${quizData.options[3].text}</p>
                             </div>
-                            <p "msg-p">${message.content}</p>
+
+                            <div class="AdFriend-quiz-answer" style="display: none;">
+                              <p>
+                                <strong>
+                                ${quizData.options.find((q) => q.correct).text} 
+                                </strong>
+                                is the correct answer!
+                              </p>
+                            </div>
+
                           </div>
                         `;
-            // console.log("AdFriend: Replacing this ad " + ad.outerHTML + " with this widget " + widget.outerHTML);
-  
+
+              const options = widget.querySelectorAll('.AdFriend-quiz-option');
+              options.forEach((option, index) => {
+                option.addEventListener('click', () => {
+                const answerDiv = widget.querySelector('.AdFriend-quiz-answer');
+                answerDiv.style.display = 'flex';
+                if (quizData.options[index].correct) {
+                  option.style.color = 'green';
+                } else {
+                  option.style.color = 'red';
+                }
+                });
+              });      } else {
+              widget.innerHTML = `
+                  <div class="AdFriend-message">
+                    <div class="AdFriend-header">
+                      <img src="${chrome.runtime.getURL('assets/icon-128.png')}" alt="" />
+                      <h3 class="title">${message.title}</h3>
+                    </div>
+                    <p "msg-p">${message.content}</p>
+                  </div>
+                `;
+            }
             ad.replaceWith(widget);
           });
         } catch (error) {
@@ -84,3 +135,8 @@ getPluginEnabledValue().then((enabled) => {
 
 listenForPluginEnabledChanges();
 
+
+
+function getRandomQuizMessage(key) {
+    return myQuizList[key][Math.floor(Math.random() * myQuizList[key].length)];
+}
