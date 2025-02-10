@@ -5,6 +5,7 @@ window.AdFriend_adSelector = `
   .ad_unit, 
   .ads, 
   [id^='ad_'], 
+  [id^='Advert1'], 
   [id^='ad-'], 
   [id^='Advert_'], 
   [class^='ad-'],
@@ -46,4 +47,6 @@ window.AdFriend_adSelector = `
   .article_sponsored_content,
   .dfp-ad,
   .advertisement-label
+  #Advert1,
+  div[style*="position: fixed; inset: 0px; z-index: 2147483647; pointer-events: auto;"]
 `;
