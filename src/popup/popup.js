@@ -234,6 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const customContent = {
         title: contentTitleInput.value,
         enabled: true,
+        isQuiz: false,
         type: contentCategoryInput.value,
         messages: contentMessagesInput.value.split('\n').filter(message => message.trim() !== "")
       };    
@@ -244,19 +245,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     //hide and unhide the custom style and content forms
-    customStyleFormToggleBtn.addEventListener('click', () => {
+    customStyleFormToggleBtn.addEventListener('click', () => { 
       customStyleForm.classList.toggle('hidden');
       customStyleFormToggleBtn.textContent = customStyleForm.classList.contains('hidden') ? 'Show Custom Style Form' : 'Hide Custom Style Form';
       if(!customStyleForm.classList.contains('hidden')) {
         //scroll to the ad preview widget
-        // adWidgetPreview.scrollIntoView({ behavior: 'smooth', block: 'start'  });
-        // window.scrollBy(0, 350);
+        adWidgetPreview.scrollIntoView({ behavior: 'smooth', block: 'start'  });
       }
     });
 
     customContentFormToggleBtn.addEventListener('click', () => {
       customContentForm.classList.toggle('hidden');
       customContentFormToggleBtn.textContent = customContentForm.classList.contains('hidden') ? 'Show Custom Content Form' : 'Hide Custom Content Form';
+      customContentForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
     cancelStyleBtn.addEventListener('click', () => {
@@ -274,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
         customContentForm.classList.add('hidden');
         customContentFormToggleBtn.textContent = 'Show Custom Content Form';
         customContentFormToggleBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        window.scrollBy(0, -250);
+        // window.scrollBy(0, -250);
       }
     });
 
@@ -283,14 +284,15 @@ document.addEventListener("DOMContentLoaded", function () {
     populateWidgetContentSelectionGroup();
 
     function populateWidgetContentSelectionGroup(forceRefresh = false) {
+      console.log("AdFriend: force refresh", forceRefresh);
       if (widgetContentSelectionGroup.children.length === 0 || forceRefresh) {
         chrome.storage.sync.get('adWidgetContents', (data) => {
           if (data.adWidgetContents) {
             adWidgetContents = data.adWidgetContents;
-            const widgetContents = data.adWidgetContents;
+            console.log('AdFriend: Widget contents found in storage', adWidgetContents);
             widgetContentSelectionGroup.innerHTML = '';
-            for (const categoryKey in widgetContents) {
-              const category = widgetContents[categoryKey];
+            for (const categoryKey in adWidgetContents) {
+              const category = adWidgetContents[categoryKey];
               const categoryDiv = document.createElement('div');
               categoryDiv.className = 'myListTile mb';
               categoryDiv.innerHTML = `
@@ -306,8 +308,8 @@ document.addEventListener("DOMContentLoaded", function () {
               const checkbox = categoryDiv.querySelector('input[type="checkbox"]');
               checkbox.addEventListener('change', (event) => {
                 const isChecked = event.target.checked;
-                widgetContents[categoryKey].enabled = isChecked;
-                chrome.storage.sync.set({ adWidgetContents: widgetContents }, () => {
+                adWidgetContents[categoryKey].enabled = isChecked;
+                chrome.storage.sync.set({ adWidgetContents: adWidgetContents }, () => {
                   console.log(`AdFriend: ${categoryKey} updated to ${isChecked}`);
                   showToast();
                 });
