@@ -24,6 +24,7 @@
         "js": [
               "src/content-scripts/adSelector.js", 
               "src/content-scripts/styleHandler.js",
+              "src/content-scripts/data/quiz/geographyQuiz.js",
               "src/content-scripts/content.js"
               ],
         "type": "module",
