@@ -8,6 +8,14 @@
     --adfriend-color: rgba(255, 255, 255, 0.8);
     --logo-size: 22px;
     --show-logo: flex; /* or hidden */
+
+    --bg-color: rgba(255, 255, 255, 0.2);
+    --bg-color2: rgba(255, 255, 255, 0.4);
+
+    --primary-color: #009ea3;
+    --primary-color-bg: rgba(0, 158, 163, 0.2);
+    --primary-color-lighter: #03f2fa;
+    --primary-color-darker: #004d50;
   }
   
   .AdFriend-widget {
@@ -43,4 +51,35 @@
     width: auto;
     height: var(--logo-size);
     display: var(--show-logo);
+  }
+
+  .AdFriend-quiz {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 10px;
+  }
+
+  .AdFriend-quiz-options-group {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .AdFriend-quiz-option {
+    display: flex;
+    width: fit-content;
+    padding: 5px 10px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--primary-color);
+    align-items: center;
+    margin: 0px;
+    animation: all 2s ease;
+    cursor: pointer;
+  }
+
+  .AdFriend-quiz-option:hover {
+    background-color: var(--primary-color-bg);
   }
