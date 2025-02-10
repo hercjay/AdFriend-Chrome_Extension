@@ -1,5 +1,3 @@
-
-
 import { defaultAdWidgetContents } from './default/adWidgetContents.js';
 import { defaultAdWidgetStyles } from './default/adWidgetStyles.js';
 import { getRandomMessages, createCategory, addMessageToCategory } from './messageHandler.js';
@@ -10,10 +8,7 @@ import { getRandomMessages, createCategory, addMessageToCategory } from './messa
 chrome.runtime.onInstalled.addListener(() => {
     console.log("AdFriend Extension Installed");
 
-    //set default adwidget contents
-    chrome.storage.sync.set({
-      adWidgetContents: defaultAdWidgetContents
-    });
+    
   
     // Set default settings
     chrome.storage.local.set({
@@ -36,7 +31,10 @@ chrome.runtime.onInstalled.addListener(() => {
       selectedAdWidgetStyle: 'dark'
     });
 
-    
+    //set default adwidget contents
+    chrome.storage.sync.set({
+      adWidgetContents: defaultAdWidgetContents
+    });
 
   });
   
