@@ -322,6 +322,16 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
+    updateUserXP();
+
+    function updateUserXP() {
+      getUserXPValue().then((xp) => {
+        userXP.textContent = xp + ' XP';
+      }).catch((error) => {
+        console.error("AdFriend: Error getting user XP", error);
+      });
+    }
+
     
 
 
@@ -396,6 +406,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    function getUserXPValue() {
+      return new Promise((resolve, reject) => {
+        chrome.storage.sync.get('adfriendXP', (data) => {
+          if (data.adfriendXP !== undefined) {
+            resolve(data.adfriendXP);
+          } else {
+            resolve(0); // default to 0 if no value is found
+          }
+        });
+      });
+    }
+
+
 
     function addNewContent(categoryKey, content) {
       //send a message
@@ -423,6 +446,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   }); // document loaded
+
+
 
 
 
