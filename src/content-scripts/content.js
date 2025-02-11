@@ -93,7 +93,47 @@ function replaceAds() {
                 }      option.style.background = 'rgba(0, 158, 163, 0.2)';
                 option.style.fontWeight = 'bold';
                 });
-              });      } else {
+              });
+            } else if(message.shouldCardFlip == true) {
+              widget.innerHTML = `
+                  <div class="AdFriend-message">
+
+                    <div id="toast" class="toast hidden">
+                      <p id="toast-message">Sample Toast Message</p>
+                    </div>
+
+                    <div class="AdFriend-header">
+                      <img src="${chrome.runtime.getURL('assets/icon-128.png')}" alt="" />
+                      <h3 class="title">${message.title}</h3>
+                    </div>
+
+                    <div class="flip-card">
+                      <div class="card-inner">
+
+                        <div class="card-front msg-p">
+                            ${message.cardFlipText}
+                        </div>
+
+                        <div class="card-back msg-p">
+                            ${message.content}
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                `;
+                let attempted = false;
+                widget.querySelector('.flip-card').addEventListener('click', () => {
+                  widget.querySelector('.flip-card').classList.toggle('flipped');
+                  
+                  if(attempted == false) {
+                    awardXP(1);
+                    showToast("You have earned 1 XP for interacting with this widget!");
+                    attempted = true;
+                  }
+                });
+              } else {
               widget.innerHTML = `
                   <div class="AdFriend-message">
                     <div class="AdFriend-header">
@@ -171,3 +211,4 @@ function awardXP(amount = 1) {
     chrome.storage.sync.set({ adfriendXP: xp + amount });
   });
 }
+
