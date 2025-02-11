@@ -107,6 +107,8 @@ export function getRandomMessages(numOfMsgs = 1) {
       messages.push({
         key: randomCategoryKey, //for quiz, we use this key to get quiz messages from local storage in content script
         isQuiz: randomCategory.isQuiz,
+        shouldCardFlip: randomCategory.shouldCardFlip || false,
+        cardFlipText: randomCategory.cardFlipText || "",
         title: randomCategory.title,
         content: randomMessage
       });
