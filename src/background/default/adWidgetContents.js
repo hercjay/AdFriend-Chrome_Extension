@@ -36,6 +36,8 @@ export const defaultAdWidgetContents = {
     funFactsDefault: {
         enabled: true,
         isQuiz: false,
+        shouldCardFlip: true,
+        cardFlipText: "Tap to reveal fun fact!",
         title: "Did You Know?",
         type: "Fun Facts",
         messages: [
