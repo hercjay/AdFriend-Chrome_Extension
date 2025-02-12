@@ -21,6 +21,17 @@
     });
   }
 
+  export function deleteCategory(categoryKey) {
+    return loadCategories().then((categories) => {
+      if (categories[categoryKey]) {
+        delete categories[categoryKey];
+        return saveCategories(categories).then(() => categories);
+      } else {
+        return Promise.reject(`Category ${categoryKey} does not exist.`);
+      }
+    });
+  }
+
   // Create a new category
     export function  createCategory(categoryKey, content) {
         return loadCategories().then((categories) => {
