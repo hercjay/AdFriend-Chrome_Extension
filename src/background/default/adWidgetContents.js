@@ -3,6 +3,7 @@
 export const defaultAdWidgetContents = {
     motivationalQuotesDefault: {
       enabled: true,
+      isDefault: true,
       isQuiz: false,
       title: "Stay Motivated!",
       type: "Motivational Quotes",
@@ -19,6 +20,7 @@ export const defaultAdWidgetContents = {
     },
     activityRemindersDefault: {
       enabled: true,
+      isDefault: true,
       isQuiz: false,
       title: "Stay Active!",
       type: "Activity Reminders",
@@ -35,6 +37,7 @@ export const defaultAdWidgetContents = {
     },
     funFactsDefault: {
         enabled: true,
+      isDefault: true,
         isQuiz: false,
         shouldCardFlip: true,
         cardFlipText: "Tap to reveal fun fact!",
@@ -53,6 +56,7 @@ export const defaultAdWidgetContents = {
       },
     defaultGeographyQuiz: {
       enabled: true,
+      isDefault: true,
       isQuiz: true,
       title: "Geography Quiz Time!",
       type: "Geography Quiz",
@@ -60,6 +64,7 @@ export const defaultAdWidgetContents = {
     },
     defaultScienceQuiz: {
       enabled: true,
+      isDefault: true,
       isQuiz: true,
       title: "Science Quiz Time!",
       type: "Science Quiz",
