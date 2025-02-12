@@ -12,7 +12,8 @@ export const defaultAdWidgetStyles = {
         color: 'rgba(255, 255, 255, 0.8)',
         titleTextColor: 'white',
         logoSize: '22px',
-        showLogo: 'flex'
+        showLogo: 'flex',
+      isDefault: true,
     },
     light: {
         styleTitle: 'Light Style (Default)',
@@ -24,7 +25,8 @@ export const defaultAdWidgetStyles = {
         color: 'rgba(5, 5, 5, 0.8)',
         titleTextColor: 'black',
         logoSize: '22px',
-        showLogo: 'flex'
+        showLogo: 'flex',
+      isDefault: true,
     },
     tealDefault: {
         styleTitle: 'Teal Style (Default)',
@@ -36,7 +38,8 @@ export const defaultAdWidgetStyles = {
         color: 'rgba(255, 255, 255, 0.8)',
         titleTextColor: 'rgb(0, 255, 255)',
         logoSize: '22px',
-        showLogo: 'flex'
+        showLogo: 'flex',
+      isDefault: true,
     },
     blueDefault: {
         styleTitle: 'Blue Style (Default)',
@@ -48,7 +51,8 @@ export const defaultAdWidgetStyles = {
         color: 'rgba(255, 255, 255, 0.8)',
         titleTextColor: 'rgb(173, 216, 230)',
         logoSize: '22px',
-        showLogo: 'flex'
+        showLogo: 'flex',
+      isDefault: true,
     },
     greenDefault: {
         styleTitle: 'Green Style (Default)',
@@ -60,7 +64,8 @@ export const defaultAdWidgetStyles = {
         color: 'rgba(255, 255, 255, 0.8)',
         titleTextColor: 'rgb(144, 238, 144)',
         logoSize: '22px',
-        showLogo: 'flex'
+        showLogo: 'flex',
+      isDefault: true,
     },
     purpleDefault: {
         styleTitle: 'Purple Style (Default)',
@@ -72,7 +77,8 @@ export const defaultAdWidgetStyles = {
         color: 'rgba(255, 255, 255, 0.8)',
         titleTextColor: 'rgb(216, 191, 216)',
         logoSize: '22px',
-        showLogo: 'flex'
+        showLogo: 'flex',
+      isDefault: true,
     }
     ,
     redDefault: {
@@ -85,7 +91,8 @@ export const defaultAdWidgetStyles = {
         color: 'rgba(255, 255, 255, 0.8)',
         titleTextColor: 'rgb(255, 99, 71)',
         logoSize: '22px',
-        showLogo: 'flex'
+        showLogo: 'flex',
+      isDefault: true,
     },
     yellowDefault: {
         styleTitle: 'Yellow Style (Default)',
@@ -97,7 +104,8 @@ export const defaultAdWidgetStyles = {
         color: 'rgba(0, 0, 0, 0.8)',
         titleTextColor: 'rgb(0, 0, 0)',
         logoSize: '22px',
-        showLogo: 'flex'
+        showLogo: 'flex',
+      isDefault: true,
     },
     pinkDefault: {
         styleTitle: 'Pink Style (Default)',
@@ -109,7 +117,8 @@ export const defaultAdWidgetStyles = {
         color: 'rgba(0, 0, 0, 0.8)',
         titleTextColor: 'rgb(255, 20, 147)',
         logoSize: '22px',
-        showLogo: 'flex'
+        showLogo: 'flex',
+      isDefault: true,
     },
     brownDefault: {
         styleTitle: 'Brown Style (Default)',
@@ -121,6 +130,7 @@ export const defaultAdWidgetStyles = {
         color: 'rgba(255, 255, 255, 0.8)',
         titleTextColor: 'rgb(210, 180, 140)',
         logoSize: '22px',
-        showLogo: 'flex'
+        showLogo: 'flex',
+      isDefault: true,
     },
 };
