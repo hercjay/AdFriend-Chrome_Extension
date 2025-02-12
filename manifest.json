@@ -37,7 +37,8 @@
         "resources": [
           "assets/icon-16.png",
           "assets/icon-48.png",
-          "assets/icon-128.png"
+          "assets/icon-128.png",
+          "assets/delete.png"
         ],
         "matches": ["<all_urls>"]
       }
