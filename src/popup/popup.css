@@ -273,11 +273,13 @@ input[type="color"] {
     cursor: pointer;
     outline: none;
     width: 100%;
-    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+    transition: all 0.5s;
 }
 
 .primaryBtn:hover {
     background: var(--primary-color-gradient-hover);
+    scale: 1.02;
 }
 
 .dangerBtn {
@@ -289,11 +291,30 @@ input[type="color"] {
     cursor: pointer;
     outline: none;
     width: 100%;
-    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+    transition: all 0.5s;
 }
 
 .dangerBtn:hover {
     background: var(--danger-color-darker);
+    scale: 1.02;
+}
+
+.deleteBtn {
+    background: var(--danger-color-darker);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    outline: none;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+    transition: all 0.5s;
+}
+
+.deleteBtn:hover {
+    background: var(--danger-color);
+    scale: 1.03;
 }
 
 h1 {
