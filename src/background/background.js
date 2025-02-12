@@ -1,6 +1,6 @@
 import { defaultAdWidgetContents } from './default/adWidgetContents.js';
 import { defaultAdWidgetStyles } from './default/adWidgetStyles.js';
-import { getRandomMessages, createCategory, addMessageToCategory } from './messageHandler.js';
+import { getRandomMessages, createCategory, deleteCategory, addMessageToCategory } from './messageHandler.js';
 
 
 
@@ -68,6 +68,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return true; // Will respond asynchronously
     case 'createCategory':
       createCategory(request.categoryKey, request.content).then((value) => {
+        sendResponse({ value });
+      }).catch((error) => {
+        sendResponse({ error });
+      });
+      return true; // Will respond asynchronously
+    case 'deleteCategory':
+      deleteCategory(request.categoryKey).then((value) => {
         sendResponse({ value });
       }).catch((error) => {
         sendResponse({ error });
