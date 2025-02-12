@@ -37,6 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const adWidgetStyleSelect = document.getElementById('adWidgetStyleSelect');
     const adWidgetPreview = document.getElementById('adWidgetPreview');
     const widgetContentSelectionGroup = document.getElementById('widgetContentSelectionGroup');
+    const widgetCustomContentSelectionGroup = document.getElementById('widgetCustomContentSelectionGroup');
+    const widgetCustomStylesSelectionGroup = document.getElementById('widgetCustomStylesSelectionGroup');
     const customStyleForm = document.getElementById('custom-style-form');
     const customContentForm = document.getElementById('custom-content-form');
     const styleTitleInput = document.getElementById('style-title');
@@ -96,11 +98,78 @@ document.addEventListener("DOMContentLoaded", function () {
     if (adWidgetStyleSelect.options.length === 0) {
       populateWidgetThemes();
     }
+    if(widgetCustomStylesSelectionGroup.children.length === 0) {
+      populateWidgetCustomStylesSelectionGroup();
+    }
 
     function populateWidgetThemes() {
       console.log("AdFriend: Populating widget themes");
       getStyles().then((fetchedStyles) => {
         styles = fetchedStyles;
+        adWidgetStyleSelect.innerHTML = '';
+        if(!styles) {
+          console.log("AdFriend: No styles found in storage");
+          return;
+        }
+        for (const styleKey in styles) {
+          const style = styles[styleKey];
+          const option = document.createElement('option');
+          option.value = styleKey;
+          option.text = style.styleTitle;
+          adWidgetStyleSelect.add(option);
+        }
+        //set the selected style
+        getSelectedAdWidgetStyleFromStorage().then((selectedStyle) => {
+          adWidgetStyleSelect.value = selectedStyle;
+          //update the preview with the selected style
+          updateAdWidgetPreview(styles[selectedStyle]);
+        }).catch((error) => {
+          console.error("AdFriend: Error getting selected style", error);
+        });
+      }).catch((error) => {
+        console.error("AdFriend: Error populating widget themes", error);
+      });
+    }
+
+    function populateWidgetCustomStylesSelectionGroup() {
+      getStyles().then((fetchedStyles) => {
+        let customStyles = [];
+        //convert to array so that you can use filter function
+        if (Array.isArray(fetchedStyles)) {
+          customStyles = fetchedStyles;
+        } else if (typeof fetchedStyles === 'object' && fetchedStyles !== null) {
+          customStyles = Object.entries(fetchedStyles).map(([key, style]) => ({ key, ...style }));
+        } else {
+          console.error('AdFriend: styles is not an array or an object');
+          return;
+        }
+        customStyles = customStyles.filter((style) => !style.isDefault);
+        widgetCustomStylesSelectionGroup.innerHTML = '';
+        if(customStyles.length === 0) {
+          widgetCustomStylesSelectionGroup.innerHTML = '<p>No custom styles found. This area will become populated when you start adding your custom styles.</p>';
+          return;
+        }
+        customStyles.forEach((style) => {
+          const styleDiv = document.createElement('div');
+          styleDiv.className = 'myListTile mb';
+          styleDiv.innerHTML = `
+                    <div class="myListTileTextLeft">
+                      <p>${style.styleTitle}</p>
+                    </div>
+                    <button class="deleteBtn" data-key="${style.key}">
+                      <img style="width: 25px; height:auto;" src="${chrome.runtime.getURL('assets/delete.png')}" alt="Delete" />
+                    </button>
+                  `;    
+          widgetCustomStylesSelectionGroup.appendChild(styleDiv);
+          // Add event listener to the button to delete style
+          const deleteBtn = styleDiv.querySelector('button');
+          deleteBtn.addEventListener('click', (event) => {
+            const styleKey = event.currentTarget.getAttribute('data-key');
+            console.log('AdFriend: Delete button clicked for key: ', styleKey);
+            deleteCustomStyle(styleKey);
+          });
+        });
+
         adWidgetStyleSelect.innerHTML = '';
         if(!styles) {
           console.log("AdFriend: No styles found in storage");
@@ -197,17 +266,22 @@ document.addEventListener("DOMContentLoaded", function () {
         logoSize: logoSizeInput.value,
         showLogo: showLogoInput.checked ? 'flex' : 'none'
       };
-      addNewStyle(styleKey, customStyle);
-      //set the new style as the selected style
-      setSelectedAdWidgetStyle(styleKey).then(() => {
-        populateWidgetThemes();
-        customStyleForm.reset();
-        customStyleForm.classList.add('hidden');
-        customStyleFormToggleBtn.textContent = 'Show Custom Style Form';
-        showToast('New Widget Style Saved!')
+      addNewStyle(styleKey, customStyle).then(() => {
+          populateWidgetCustomStylesSelectionGroup();
+          //set the new style as the selected style
+          setSelectedAdWidgetStyle(styleKey).then(() => {
+            populateWidgetThemes();
+            customStyleForm.reset();
+            customStyleForm.classList.add('hidden');
+            customStyleFormToggleBtn.textContent = 'Show Custom Style Form';
+            showToast('New Widget Style Saved!')
+          }).catch((error) => {
+            console.error("AdFriend: Error setting new style as the selected style", error);
+          });
       }).catch((error) => {
-        console.error("AdFriend: Error setting new style as the selected style", error);
+        console.error("AdFriend: Error adding new style", error);
       });
+      
     });
 
 
@@ -282,6 +356,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // populate the widget content selection group
     populateWidgetContentSelectionGroup();
+    populateWidgetCustomContentSelectionGroup();
 
     function populateWidgetContentSelectionGroup(forceRefresh = false) {
       console.log("AdFriend: force refresh", forceRefresh);
@@ -322,6 +397,63 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
+
+    function populateWidgetCustomContentSelectionGroup(forceRefresh = false) {
+
+        console.log("AdFriend: force refresh", forceRefresh);
+        if (widgetCustomContentSelectionGroup.children.length === 0 || forceRefresh) {
+          chrome.storage.sync.get('adWidgetContents', (data) => {
+            if (data.adWidgetContents) {
+              let adWidgetContents = [];
+              //convert to array so that you can use filter function
+              if (Array.isArray(data.adWidgetContents)) {
+                adWidgetContents = data.adWidgetContents;
+              } else if (typeof data.adWidgetContents === 'object' && data.adWidgetContents !== null) {
+                adWidgetContents = Object.entries(data.adWidgetContents).map(([key, content]) => ({ key, ...content }));
+              } else {
+                console.error('AdFriend: adWidgetContents is not an array or an object');
+                return;
+              }
+
+              let adWidgetCustomContents = adWidgetContents.filter((content) => !content.isDefault);
+              console.log('AdFriend: Widget custom contents found in storage', adWidgetCustomContents);
+              widgetCustomContentSelectionGroup.innerHTML = '';
+              if(adWidgetCustomContents.length === 0) {
+                widgetCustomContentSelectionGroup.innerHTML = '<p>No custom content type found. This area will become populated when you start adding your custom contents.</p>';
+                return;
+              }
+              
+              adWidgetCustomContents.forEach((content) => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'myListTile mb';
+                categoryDiv.innerHTML = `
+                          <div class="myListTileTextLeft">
+                          <p>${content.type}</p>
+                          <small class="subtext">${content.title}</small>
+                          </div>
+                          <button class="deleteBtn" data-key="${content.key}">
+                            <img style="width: 25px; height:auto;" src="${chrome.runtime.getURL('assets/delete.png')}" alt="Delete" />
+                          </button>
+                        `;    widgetCustomContentSelectionGroup.appendChild(categoryDiv);
+        
+                // Add event listener to the button to delete category
+                const deleteBtn = categoryDiv.querySelector('button');
+                deleteBtn.addEventListener('click', (event) => {
+                  const categoryKey = event.currentTarget.getAttribute('data-key');
+                  console.log('AdFriend: Delete button clicked for key: ', categoryKey);
+                  deleteCustomContentCategory(categoryKey);
+                });
+              });
+            } else {
+              console.error('AdFriend: No widget contents found in storage');
+            }
+          });
+        }
+    }
+
+
+
+
     updateUserXP();
 
     function updateUserXP() {
@@ -334,6 +466,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
     
 
+    function deleteCustomStyle(key) {
+      getStyles().then((styles) => {
+        delete styles[key];
+        //if deleted style is the selected style, set dark as the selected style
+        getSelectedAdWidgetStyleFromStorage().then((selectedStyle) => {
+          if(selectedStyle === key) {
+            setSelectedAdWidgetStyle('dark');
+          }
+        });
+        saveStyles(styles).then(() => {
+          populateWidgetCustomStylesSelectionGroup(true);
+          populateWidgetThemes();
+          showToast('Widget Style Deleted!');
+        }).catch((error) => {
+          console.error("AdFriend: Error saving styles after deleting", error);
+        });
+      }).catch((error) => {
+        console.error("AdFriend: Error deleting style", error);
+      });
+    }
 
     function getStyles() {
       return new Promise((resolve, reject) => {
@@ -385,12 +537,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function addNewStyle(styleKey, style) {
-      getStyles().then((styles) => {
+      return getStyles().then((styles) => {
         styles[styleKey] = style;
-        saveStyles(styles);
-      }).catch((error) => {
+        return saveStyles(styles);
+            }).catch((error) => {
         console.error("AdFriend: Error adding new style", error);
-      });
+            });
     }
 
 
@@ -436,6 +588,7 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log("AdFriend: Category created successfully", response.value);
           //update the widget content selection group
           populateWidgetContentSelectionGroup(true);
+          populateWidgetCustomContentSelectionGroup(true);
           customContentForm.reset();
           customContentForm.classList.add('hidden');
           customContentFormToggleBtn.textContent = 'Show Custom Content Form';
@@ -443,6 +596,29 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       );
     };
+
+
+    function deleteCustomContentCategory(categoryKey) {
+      //send a message
+      chrome.runtime.sendMessage(
+        { action: 'deleteCategory', categoryKey: categoryKey },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            console.error("AdFriend: Error sending message for deleteCategory", chrome.runtime.lastError);
+            return;
+          }
+          if (response.error) {
+            console.error("AdFriend: Error in response for deleteCategory", response.error);
+            return;
+          }
+          console.log("AdFriend: Category deleted successfully", response.value);
+          //update the widget content selection groups
+          populateWidgetContentSelectionGroup(true);
+          populateWidgetCustomContentSelectionGroup(true);
+          showToast('Content Type Deleted!');
+        }
+      );
+    }
 
 
   }); // document loaded
