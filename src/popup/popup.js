@@ -472,7 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //if deleted style is the selected style, set dark as the selected style
         getSelectedAdWidgetStyleFromStorage().then((selectedStyle) => {
           if(selectedStyle === key) {
-            setSelectedAdWidgetStyle('dark');
+            setSelectedAdWidgetStyle('tealDefault');
           }
         });
         saveStyles(styles).then(() => {
