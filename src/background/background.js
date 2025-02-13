@@ -28,7 +28,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
     // Set default selectedAdWidgetStyle to light
     chrome.storage.sync.set({
-      selectedAdWidgetStyle: 'dark'
+      selectedAdWidgetStyle: 'tealDefault'
     });
 
     //set default adwidget contents
