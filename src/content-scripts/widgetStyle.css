@@ -50,10 +50,10 @@
   }
 
   .AdFriend-widget  img {
-    border-radius: 100%;
-    width: auto;
-    height: var(--logo-size);
-    display: var(--show-logo);
+    border-radius: 100% !important;
+    width: auto !important;
+    height: var(--logo-size) !important;
+    display: var(--show-logo) !important;
   }
 
   .AdFriend-quiz {
