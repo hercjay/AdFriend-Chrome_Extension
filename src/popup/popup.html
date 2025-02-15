@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AdFriend - Chrome Extension</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- for showing toast -->
+    <div id="toast" class="toast hidden">
+      <p id="toast-message">Sample Toast Message</p>
+    </div>
+
+    <div class="header">
+      <img id="adfriend-icon" alt="" style="width: 48px; border-radius: 100%;" />
+      <h1>AdFriend</h1>
+    </div>
+    <div class="header-desc">
+      <p>AdFriend helps you replace ads with "Positive" widgets on the websites you visit.</p>
+      <div style="display: flex; justify-content: center; gap: 25px; width: 100;">
+        <small><strong>Version 1.0.0</strong></small>
+        <small><strong>Hercjay Studios</strong></small>
+      </div>
+    </div>
+
+    <div class="myCard">
+      <h1 class="myCardTitle">Core Settings</h1>
+      <div class="myListTile">
+        <p>User XP</p>
+        <strong id="userXP" class="xp-value">0 XP</strong>
+      </div>
+      <div class="myCardContentGroup">
+        <div class="myListTile ">
+          <p>Enable AdFriend Plugin</p>
+          <input type="checkbox" class="myToggle" id="toggleExtension">
+        </div>
+        <div class="myListTile" title="Enable or Disable Dark Mode for this PopUp Window">
+            <p>Dark Mode</p>
+            <input type="checkbox" class="myToggle" id="popUpThemeSwitch">
+        </div>
+      </div>
+    </div>
+
+    <div class="myCard">
+      <h1 class="myCardTitle">Widget Style</h1>
+
+      <p class="subtext">Configure the display style of the widget that you are shown in place of ads across the websites you visit.</p>
+
+      <div id="adWidgetPreview" class="stickyTop" >
+        <div class="AdFriend-message">
+            <div class="preview-header">
+              <img id="preview-icon"  /> 
+              <h3 class="title"> Preview Title </h3>
+            </div>
+          <p class="msg-p">Preview content</p>
+        </div>
+      </div>
+
+
+      <h3>Select Style</h3>
+
+      <!-- stored styles will be loaded here using js -->
+      <select id="adWidgetStyleSelect" name="Widget Style" value="light"></select>
+
+      <div class="customWidgetStyleDiv">
+        
+          <h3>Add Your Own Style</h3>
+          <p class="subtext">
+            Your changes are reflected in the preview above. Remember to hit "Save" after you have made your changes to save the style and apply it.
+          </p>
+
+          <!-- button to toggle the form visibility -->
+          <button class="primaryBtn" id="custom-style-form-toggle-btn" type="submit">Show Custom Style Form</button>
+
+          <form id="custom-style-form" class="myForm hidden" >
+            <div>
+              <label for="background-color">Background Color:</label>
+              <input type="color" id="background-color" name="background-color" value="#ffffff" required>
+            </div>
+            <div>
+              <label for="title-text-color">Title Text Color:</label>
+              <input type="color" id="title-text-color" name="text-color" value="#000000" required>
+            </div>
+            <div>
+              <label for="text-color">Content Text Color:</label>
+              <input type="color" id="text-color" name="text-color" value="#333333" required>
+            </div>
+            <div>
+              <label for="padding">Padding:</label>
+              <select id="padding" name="padding" required>
+                <option value="5px">5px</option>
+                <option value="10px">10px</option>
+                <option value="15px" selected>15px</option>
+                <option value="20px">20px</option>
+              </select>
+            </div>
+            <div>
+              <label for="border-radius">Border Radius:</label>
+              <select id="border-radius" name="border-radius" required>
+                <option value="0px">0px</option>
+                <option value="5px" selected>5px</option>
+                <option value="10px">10px</option>
+                <option value="15px">15px</option>
+                <option value="20px">20px</option>
+                <option value="30px">30px</option>
+                <option value="40px">40px</option>
+                <option value="50px">50px</option>
+                <option value="100px">100px</option>
+              </select>
+            </div>
+            <div>
+              <label for="font-size">Font Size:</label>
+              <select id="font-size" name="font-size" required>
+                <option value="12px">12px</option>
+                <option value="14px" selected>14px</option>
+                <option value="16px">16px</option>
+                <option value="18px">18px</option>
+                <option value="20px">20px</option>
+                <option value="22px">22px</option>
+                <option value="24px">24px</option>
+                <option value="26px">26px</option>
+                <option value="28px">28px</option>
+                <option value="30px">30px</option>
+              </select>
+            </div>
+            <div>
+              <label for="text-align">Content Text Align:</label>
+              <select id="text-align" name="text-align" required>
+                <option value="left">Left</option>
+                <option value="center" selected>Center</option>
+                <option value="right">Right</option>
+                <option value="justify">Justify</option>
+              </select>
+            </div>
+            <div class="myListTile" title="Show or hide the logo on the widget">
+              <p class="myListTile">Show Logo <input type="checkbox" checked class="myToggle" id="show-logo"></p>
+            </div>
+            <div>
+              <label for="logo-size">Logo Size:</label>
+              <select id="logo-size" name="logo-size" required>
+              <option value="12px">12px</option>
+              <option value="14px">14px</option>
+              <option value="16px">16px</option>
+              <option value="18px">18px</option>
+              <option value="20px">20px</option>
+              <option value="22px" selected>22px</option>
+              <option value="24px">24px</option>
+              <option value="26px">26px</option>
+              <option value="28px">28px</option>
+              <option value="30px">30px</option>
+              </select>
+            </div>
+            <div>
+              <label for="style-title">Style Name:</label>
+              <input type="text" id="style-title" name="style-title" placeholder="HercjayStyle" required>
+            </div>
+            <button class="primaryBtn" id="save-style" type="submit">Save Style</button>
+            <button class="dangerBtn" id="cancel-style" type="submit">Cancel</button>
+          </form>
+
+      </div>
+
+    </div> <!-- widget style myCard -->
+    
+
+    <div class="myCard">
+      <h1 class="myCardTitle">Widget Content</h1>
+
+      <p class="subtext">Customize the types of contents displayed in the Ad-replacement widgets. Your changes will take effect on subsequent page loads.</p>
+      <p class="subtext"><strong>Take care not to disable all!</strong></p>
+      
+      <!-- will be populated by list of content types in storage -->
+      <div class="myCardContentGroup" id="widgetContentSelectionGroup">
+      </div>
+
+      <div class="customWidgetContentDiv">
+        
+        <h3>Add Your Own Content</h3>
+        <p class="subtext">
+          Add your own content type to be displayed in the Ad-replacement widgets. You create a content category and then add contents to it. The contents added will randomly be displayed in the widgets.
+        </p>
+        <p class="subtext">
+          Make sure to hit "Save" after you have added your content to save the changes.
+        </p>
+
+        <!-- button to toggle the form visibility -->
+        <button class="primaryBtn" id="custom-content-form-toggle-btn" >Show Custom Content Form</button>
+
+        <form id="custom-content-form" class="myForm hidden" >
+            <div title="Displayed as the category of the content in settings above, but not in the widget">
+              <label for="content-category">Content Category Name:</label>
+              <input type="text" id="content-category" name="content-category" placeholder="Fun Facts" required>
+            </div>
+            <div title="Displayed as the title of the widget">
+              <label for="content-category">Title Text:</label>
+              <input type="text" id="content-title" name="content-title" placeholder="Did You Know?" required>
+            </div>
+            <div>
+              <label for="content-message">Content Message:</label>
+                <small>Add multiple messages by separating each message with a new line</small>
+              <textarea autosize id="content-messages" name="content-messages" placeholder="Enter your messages here" required></textarea>
+            </div>
+          <button class="primaryBtn" id="save-content" type="submit">Save Content</button>
+          <button class="dangerBtn" id="cancel-content" type="submit">Cancel</button>
+        </form>
+
+      </div>
+      
+    </div> <!-- widget content myCard -->
+
+
+
+    <div class="myCard">
+      <h1 class="myCardTitle" style="color: red;">Delete Custom Styles and Content</h1>
+
+      <p class="subtext">
+        Delete custom styles and content that you have added to the extension. This action is irreversible.
+      </p>
+      <p class="subtext"><strong>The default styles and contents cannot be deleted but can be disabled using the sections above.</strong></p>
+      
+      <!-- will be populated by list of custom content types in storage -->
+      <h3>Custom Contents</h3>
+      <div class="myCardContentGroup" id="widgetCustomContentSelectionGroup">
+      </div>
+
+      <!-- will be populated by list of custom styles in storage -->
+      <h3>Custom Styles</h3>
+      <div class="myCardContentGroup" id="widgetCustomStylesSelectionGroup">
+      </div>
+      
+    </div> <!-- delete style and  content myCard -->
+
+
+
+  </div>   <!-- container -->
+
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

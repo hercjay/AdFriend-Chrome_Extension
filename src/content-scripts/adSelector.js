@@ -1,0 +1,22 @@
+window.AdFriend_adSelector = `
+  iframe,
+  [class*="ad-"],
+  [class*="ads"],
+  [class*="advertisement"],
+  [id*="ad_"],
+  [id*="Advert"],
+  div[style*="position: fixed; inset: 0px; z-index: 2147483647; pointer-events: auto;"],
+  a[href^="https://ad.responservbzh.icu/"],
+  a[href^="https://deliver/click/"],
+  a[href^="https://ad-manager/"],
+  a[href*="ad-sidebar"],
+  a[href*="ad.jpg.pagespeed"],
+  a[href*="ads-manager"],
+  a[href*="ads/assets"],
+  a[href*="assets/ads"],
+  a[href*="banner-ads"],
+  a[href*="contrib-ads"],
+  a[href*="sponsor-ad"],
+  a[href*="web-advert"],
+  [rel="sponsored"]
+`;

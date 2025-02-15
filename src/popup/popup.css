@@ -1,0 +1,328 @@
+:root {
+    --bg-gradient-light: linear-gradient(95deg, #cfe1fd, #f2ffff);
+    --bg-gradient-dark: linear-gradient(95deg, #050f1f, #0d292b);
+
+    --bg-gradient: var(--bg-gradient-light);
+    --text-color: black;
+    --glass-bg: rgba(255, 255, 255, 0.2);
+    --glass-border: rgba(150, 150, 150, 0.9);
+
+    --switch-circle-color: #333;
+    --switch-active-bg: var(--primary-color-lighter);
+    /* --switch-active-bg: rgb(159, 255, 139); */
+    --switch-inactive-bg: rgb(255, 255, 255);
+
+
+    --bg-color: #dadada;
+    --text-primary: #333;
+
+
+    --primary-color: #009ea3;
+    --primary-color-lighter: #03f2fa;
+    --primary-color-darker: #004d50;
+    --danger-color: #dc3545;
+    --danger-color-darker: #83000d;
+    --primary-color-gradient: linear-gradient(95deg, var(--primary-color-darker), var(--primary-color-lighter));
+    --primary-color-gradient-hover: linear-gradient(265deg, var(--primary-color-darker), var(--primary-color-lighter));
+
+
+
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    
+}
+
+
+#preview-icon {
+    border-radius: 100%;
+    width: auto;
+    height: 22px;
+    display: flex;
+}
+
+.preview-header {
+    display: flex; 
+    gap: 10px; 
+    justify-content: center;
+    align-items: center;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0; 
+    padding: 0; 
+    width: 100%;
+    max-width: 400px; /* Maximum width for the popup */
+    min-width: 300px; /* Minimum width for the popup */
+    max-height: 600px; /* Maximum height for the popup */
+    overflow-y: auto;
+    box-sizing: border-box;
+    color: var(--text-color);
+}
+
+h1, h2, p {
+    color: var(--text-color);
+}
+
+.subtext{
+    color: var(--text-color);
+    opacity: 0.8;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    width: 100%;
+    background: var(--bg-gradient);
+    box-sizing: border-box; 
+}
+
+.header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.header-desc {
+    color: var(--text-color);
+    opacity: 0.8;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+}
+
+.header h1 {
+    font-size: 1.8em;
+}
+
+.myListTile {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.myListTileTextLeft{
+    display: flex;
+    gap: 2px;
+    flex-direction: column;
+    align-items: start;
+}
+
+.myListTileTextLeft p, .myListTileTextLeft small {
+    margin: 0px;
+    padding: 0px;
+}
+
+.mb {
+    margin-bottom: 10px;
+}
+
+
+
+.myToggle {
+    appearance: none;
+    width: 32px;
+    height: 16px;
+    background-color: var(--switch-inactive-bg);
+    border-radius: 10px;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.myToggle::before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background-color: var(--switch-circle-color);
+    border-radius: 50%;
+    top: 1px;
+    left: 1px;
+    transition: transform 0.3s ease;
+}
+
+.myToggle:checked {
+    background-color: var(--switch-active-bg);
+}
+
+.myToggle:checked::before {
+    transform: translateX(16px);
+}
+
+
+
+.myCard {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px 10px;
+    border-top: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px); 
+    margin-top: 20px;
+}
+
+.myCardContentGroup {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 5px;
+    border: 0.5px solid var(--glass-border);
+}
+
+.myCardTitle {
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.myForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: 25px;
+}
+
+.myForm > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+input:not(.myToggle), select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg) !important;
+    color: var(--input-text-color);
+    outline: none;
+}
+
+textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg) !important;
+    color: var(--input-text-color);
+    outline: none;
+    min-height: 100px;
+    max-height: 250px;
+    height: auto;
+}
+
+.toast{
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    width: 80%;
+    margin: auto;
+    transform: translateX(-50%);
+    padding: 10px;
+    border-radius: 5px;
+    background: var(--primary-color-darker);
+    border: 2px solid var(--glass-border);
+    z-index: 999;
+}
+
+.toast p {
+    color: white !important;
+    text-align: center;
+}
+
+input[type="color"] {
+    padding: 0;
+    width: 100%;
+    height: 40px;
+}
+
+.stickyTop {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.primaryBtn {
+    background: var(--primary-color-gradient);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+    transition: all 0.5s;
+}
+
+.primaryBtn:hover {
+    background: var(--primary-color-gradient-hover);
+    scale: 1.02;
+}
+
+.dangerBtn {
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+    transition: all 0.5s;
+}
+
+.dangerBtn:hover {
+    background: var(--danger-color-darker);
+    scale: 1.02;
+}
+
+.deleteBtn {
+    background: var(--danger-color-darker);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    outline: none;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+    transition: all 0.5s;
+}
+
+.deleteBtn:hover {
+    background: var(--danger-color);
+    scale: 1.03;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+.theme-option, .custom-option {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
