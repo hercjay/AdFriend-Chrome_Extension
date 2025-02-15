@@ -17,5 +17,6 @@ window.AdFriend_adSelector = `
   a[href*="banner-ads"],
   a[href*="contrib-ads"],
   a[href*="sponsor-ad"],
-  a[href*="web-advert"]
+  a[href*="web-advert"],
+  [rel="sponsored"]
 `;
